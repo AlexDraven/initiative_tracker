@@ -32,7 +32,7 @@ class App extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'DnD Initiative Tracker',
-        initialRoute: LoginScreen.routeName,
+        initialRoute: CheckAuthScreen.routeName,
         routes: {
           LoginScreen.routeName: (context) => LoginScreen(),
           RegisterScreen.routeName: (context) => RegisterScreen(),

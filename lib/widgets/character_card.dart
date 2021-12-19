@@ -17,7 +17,7 @@ class CharacterCard extends StatelessWidget {
             child: Stack(
               alignment: Alignment.bottomLeft,
               children: [
-                _BackgroundImage(character.picture),
+                _BackgroundImage(character),
                 _CharacterDetails(character),
                 Positioned(
                     top: 0, right: 0, child: _CharacterLevelTag(character)),
@@ -146,29 +146,32 @@ class _CharacterDetails extends StatelessWidget {
 }
 
 class _BackgroundImage extends StatelessWidget {
-  final String? url;
+  final Character character;
 
-  const _BackgroundImage(this.url) : super();
+  const _BackgroundImage(this.character) : super();
 
   @override
   Widget build(BuildContext context) {
     return Opacity(
       opacity: 0.9,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(25),
-        child: SizedBox(
-          width: double.infinity,
-          height: 400,
-          child: url == null
-              ? const Image(
-                  image: AssetImage('assets/images/ditto.png'),
-                  fit: BoxFit.cover)
-              : FadeInImage(
-                  placeholder:
-                      const AssetImage('assets/images/jar-loading.gif'),
-                  image: NetworkImage(url!),
-                  fit: BoxFit.cover,
-                ),
+      child: Hero(
+        tag: character.id!,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(25),
+          child: SizedBox(
+            width: double.infinity,
+            height: 400,
+            child: character.picture == null
+                ? const Image(
+                    image: AssetImage('assets/images/ditto.png'),
+                    fit: BoxFit.cover)
+                : FadeInImage(
+                    placeholder:
+                        const AssetImage('assets/images/jar-loading.gif'),
+                    image: NetworkImage(character.picture!),
+                    fit: BoxFit.cover,
+                  ),
+          ),
         ),
       ),
     );

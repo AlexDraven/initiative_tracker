@@ -39,7 +39,7 @@ class _CharacterScreenBody extends StatelessWidget {
             Stack(
               children: [
                 CharacterImage(
-                  imageUrl: charactersService.selectedCharacter.picture,
+                  character: charactersService.selectedCharacter,
                 ),
                 Positioned(
                     top: 60,

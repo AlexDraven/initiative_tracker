@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:initiative_tracker/models/models.dart';
 
 class CharacterImage extends StatelessWidget {
-  final String? imageUrl;
+  final Character? character;
 
-  const CharacterImage({Key? key, this.imageUrl}) : super(key: key);
+  const CharacterImage({Key? key, this.character}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +18,14 @@ class CharacterImage extends StatelessWidget {
         height: 450,
         child: Opacity(
           opacity: 0.9,
-          child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(45), topRight: Radius.circular(45)),
-              child: getImage(imageUrl)),
+          child: Hero(
+            tag: character!.id ?? 'newCharacter',
+            child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(45),
+                    topRight: Radius.circular(45)),
+                child: getImage(character!.picture)),
+          ),
         ),
       ),
     );
