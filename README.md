@@ -2,6 +2,11 @@
 
 A new Flutter project.
 
+## generar iconos
+
+```
+flutter packages pub run flutter_launcher_icons:main
+```
 ## Getting Started
 
 This project is a starting point for a Flutter application.
