@@ -120,7 +120,10 @@ class _LoginForm extends StatelessWidget {
                     loginForm.isLoading = true;
 
                     final String? errorMessage = await authService.createUser(
-                        loginForm.email, loginForm.password);
+                        loginForm.firstname,
+                        loginForm.lastname,
+                        loginForm.email,
+                        loginForm.password);
 
                     if (errorMessage == null) {
                       Navigator.pushReplacementNamed(
@@ -128,6 +131,7 @@ class _LoginForm extends StatelessWidget {
                     } else {
                       // ignore: avoid_print
                       print(errorMessage);
+                      _showToast(context, errorMessage);
                       loginForm.isLoading = false;
                     }
 
@@ -138,4 +142,15 @@ class _LoginForm extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showToast(BuildContext context, String message) {
+  final scaffold = ScaffoldMessenger.of(context);
+  scaffold.showSnackBar(
+    SnackBar(
+      content: Text(message),
+      action:
+          SnackBarAction(label: 'OK', onPressed: scaffold.hideCurrentSnackBar),
+    ),
+  );
 }
