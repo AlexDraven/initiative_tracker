@@ -14,7 +14,7 @@ class CharactersService extends ChangeNotifier {
 
   late Character selectedCharacter;
 
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   File? newPictureFile;
 

@@ -16,7 +16,7 @@ class CheckAuthScreen extends StatelessWidget {
           future: authService.readToken(),
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
             if (!snapshot.hasData) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
             if (snapshot.data == '') {
               Future.microtask(() {
@@ -39,7 +39,7 @@ class CheckAuthScreen extends StatelessWidget {
                       pageBuilder: (BuildContext context,
                           Animation<double> animation,
                           Animation<double> secondaryAnimation) {
-                        return CharacterListScreen();
+                        return const CharacterListScreen();
                       },
                       transitionDuration: const Duration(seconds: 0),
                     ));
