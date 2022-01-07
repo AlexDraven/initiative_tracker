@@ -31,42 +31,41 @@ class AuthService extends ChangeNotifier {
       return 'Usuario creado exitosamente con el email: ${decodedResp['email']}';
       // return null;
     } else {
-      print(decodedResp);
       return response.statusCode >= 400 && response.statusCode < 500
           ? decodedResp['message'][0]
           : 'Error al crear el usuario';
     }
   }
 
-// TODO: UPDATE LOGIN
-  Future<String?> login(String email, String password) async {
+  Future<String?> login(String username, String password) async {
     final Map<String, dynamic> authData = {
-      'email': email,
+      'username': username,
       'password': password,
-      'returnSecureToken': true,
     };
 
-    final url = Uri.https(_baseUrl, '/v1/accounts:signInWithPassword');
+    final url = Uri.http(_baseUrl, '/auth/login');
+    // TODO: change to https
 
-    final response = await http.post(url, body: json.encode(authData));
+    final response = await http.post(url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(authData));
+
     final Map<String, dynamic> decodedResp = json.decode(response.body);
 
-    if (decodedResp.containsKey('idToken')) {
-      await storage.write(key: 'idToken', value: decodedResp['idToken']);
+    if (decodedResp.containsKey('token')) {
+      await storage.write(key: 'token', value: decodedResp['token']);
       return null;
     } else {
-      return decodedResp['error']['message'];
+      return decodedResp['message'][0];
     }
   }
 
-// TODO: UPDATE LOGOUT
   Future<void> logout() async {
-    await storage.delete(key: 'idToken');
+    await storage.delete(key: 'token');
     notifyListeners();
   }
 
-// TODO: UPDATE CHECK AUTH
   Future<String> readToken() async {
-    return await storage.read(key: 'idToken') ?? '';
+    return await storage.read(key: 'token') ?? '';
   }
 }
