@@ -1,61 +1,77 @@
+// https://app.quicktype.io/
+
 // To parse this JSON data, do
 //
-//     final character = characterFromMap(jsonString);
-// https://app.quicktype.io/
+//     final character = characterFromJson(jsonString);
 
 import 'dart:convert';
 
 class Character {
-  Character(
-      {required this.rolClass,
-      required this.level,
-      required this.name,
-      this.picture,
-      required this.playerId,
-      required this.race,
-      this.id,
-      required this.active});
+  Character({
+    this.id,
+    required this.name,
+    required this.rolClass,
+    required this.race,
+    required this.level,
+    this.picture,
+    required this.description,
+    required this.isActive,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-  String rolClass;
-  int level;
+  int? id;
   String name;
-  String? picture;
-  String playerId;
+  String rolClass;
   String race;
-  String? id;
-  bool active;
+  int level;
+  String? picture;
+  String description;
+  bool isActive;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
-  factory Character.fromJson(String str) => Character.fromMap(json.decode(str));
+  factory Character.fromRawJson(String str) =>
+      Character.fromJson(json.decode(str));
 
-  String toJson() => json.encode(toMap());
+  String toRawJson() => json.encode(toJson());
 
-  factory Character.fromMap(Map<String, dynamic> json) => Character(
-        rolClass: json["rolClass"],
-        level: json["level"],
+  factory Character.fromJson(Map<String, dynamic> json) => Character(
+        id: json["id"],
         name: json["name"],
-        picture: json["picture"],
-        playerId: json["playerId"],
+        rolClass: json["rolClass"],
         race: json["race"],
-        active: json["active"],
+        level: json["level"],
+        picture: json["picture"],
+        description: json["description"],
+        isActive: json["isActive"],
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
-  Map<String, dynamic> toMap() => {
-        "rolClass": rolClass,
-        "level": level,
+  Map<String, dynamic> toJson() => {
+        "id": id,
         "name": name,
-        "picture": picture,
-        "playerId": playerId,
+        "rolClass": rolClass,
         "race": race,
-        "active": active
+        "level": level,
+        "picture": picture,
+        "description": description,
+        "isActive": isActive,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
       };
 
   Character copy() => Character(
-      rolClass: rolClass,
-      level: level,
-      name: name,
-      picture: picture,
-      playerId: playerId,
-      race: race,
-      id: id,
-      active: active);
+        id: id,
+        name: name,
+        rolClass: rolClass,
+        race: race,
+        level: level,
+        picture: picture,
+        description: description,
+        isActive: isActive,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
 }

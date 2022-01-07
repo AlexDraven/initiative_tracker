@@ -38,10 +38,10 @@ class CharacterListScreen extends StatelessWidget {
             charactersService.selectedCharacter = Character(
                 name: '',
                 level: 1,
+                description: '',
                 race: '',
                 rolClass: '',
-                active: true,
-                playerId: '0');
+                isActive: true);
             Navigator.pushNamed(context, CharacterScreen.routeName);
           },
         ));

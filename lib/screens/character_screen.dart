@@ -158,7 +158,7 @@ class _CharacterForm extends StatelessWidget {
                   height: 30,
                 ),
                 SwitchListTile.adaptive(
-                    value: character.active,
+                    value: character.isActive,
                     title: const Text('Activo'),
                     activeColor: Colors.indigo,
                     onChanged: characterForm.updateActive),

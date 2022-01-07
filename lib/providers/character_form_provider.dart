@@ -9,7 +9,7 @@ class CharacterFormProvider extends ChangeNotifier {
   CharacterFormProvider(this.character);
 
   updateActive(bool value) {
-    character.active = value;
+    character.isActive = value;
     notifyListeners();
   }
 

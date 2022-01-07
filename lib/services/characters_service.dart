@@ -7,14 +7,11 @@ import 'package:initiative_tracker/models/models.dart';
 import 'package:http/http.dart' as http;
 
 class CharactersService extends ChangeNotifier {
-  // ignore: unused_field
-  final String _baseUrl =
-      'dnd-initiative-tracker-4bef6-default-rtdb.firebaseio.com';
+  final String _baseUrl = '10.0.2.2:3000';
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
   final List<Character> characters = [];
 
   late Character selectedCharacter;
-
-  final storage = const FlutterSecureStorage();
 
   File? newPictureFile;
 
@@ -29,59 +26,80 @@ class CharactersService extends ChangeNotifier {
   Future<List<Character>> loadCharacters() async {
     isLoading = true;
     notifyListeners();
-    final url = Uri.https(_baseUrl, 'characters.json',
-        {'auth': await storage.read(key: 'idToken') ?? ''});
-
-    final resp = await http.get(url);
-
-    final Map<String, dynamic> charactersMap = json.decode(resp.body);
-
-    charactersMap.forEach((key, value) {
-      final tmpCharacter = Character.fromMap(value);
-      tmpCharacter.id = key;
-      characters.add(tmpCharacter);
+    final url = Uri.http(_baseUrl, '/characters');
+    //TODO: pasar a https
+    final response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      'Authorization': 'Bearer ${await _storage.read(key: 'token')}'
     });
 
-    isLoading = false;
-    notifyListeners();
-    return characters;
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      print(data);
+      final List<Character> characters = data.map((dynamic item) {
+        return Character.fromJson(item);
+      }).toList();
+      this.characters.clear();
+      this.characters.addAll(characters);
+      isLoading = false;
+      notifyListeners();
+      return characters;
+    } else {
+      this.characters.clear();
+      isLoading = false;
+      notifyListeners();
+      throw Exception('Failed to load characters');
+    }
   }
 
   Future saveOrCreateCharacter(Character character) async {
     isSaving = true;
     notifyListeners();
-
     if (character.id == null) {
       await _createCharacter(character);
     } else {
       await _updateCharacter(character);
     }
-
     isSaving = false;
     notifyListeners();
   }
 
   Future _updateCharacter(Character character) async {
-    final url = Uri.https(_baseUrl, 'characters/${character.id}.json',
-        {'auth': await storage.read(key: 'idToken') ?? ''});
-    // ignore: unused_local_variable
-    final resp = await http.put(url, body: character.toJson());
-    final index = characters.indexWhere((c) => c.id == character.id);
-    characters[index] = character;
-    return character.id;
+    final url = Uri.http(_baseUrl, '/characters/${character.id}');
+    final response = await http.put(url,
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          'Authorization': 'Bearer ${await _storage.read(key: 'token')}'
+        },
+        body: json.encode(character));
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      final data = json.decode(response.body);
+      final Character updatedCharacter = Character.fromJson(data);
+      final index =
+          characters.indexWhere((Character c) => c.id == updatedCharacter.id);
+      characters[index] = updatedCharacter;
+      notifyListeners();
+    } else {
+      throw Exception('Failed to update character');
+    }
   }
 
   Future _createCharacter(Character character) async {
-    final url = Uri.https(_baseUrl, 'characters.json',
-        {'auth': await storage.read(key: 'idToken') ?? ''});
-    final resp = await http.post(url, body: character.toJson());
-    final decodedData = json.decode(resp.body);
-
-    character.id = decodedData['name'];
-
-    characters.add(character);
-
-    return character.id!;
+    final url = Uri.http(_baseUrl, '/characters');
+    final response = await http.post(url,
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          'Authorization': 'Bearer ${await _storage.read(key: 'token')}'
+        },
+        body: json.encode(character));
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      final data = json.decode(response.body);
+      final Character createdCharacter = Character.fromJson(data);
+      characters.add(createdCharacter);
+      notifyListeners();
+    } else {
+      throw Exception('Failed to create character');
+    }
   }
 
   void updateSelectedCharacterImage(String path) {
@@ -98,7 +116,8 @@ class CharactersService extends ChangeNotifier {
     // upload image to cloudinary
     final url = Uri.parse(
         'https://api.cloudinary.com/v1_1/dgnezslzj/image/upload?upload_preset=dnd-initiative-tracker');
-
+    // ignore: todo
+    // TODO: esto podria hacerlo en backend initiative-tracker-server y no en cliente
     final imageUploadRequest = http.MultipartRequest('POST', url);
 
     final file =
