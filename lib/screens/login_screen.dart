@@ -63,7 +63,7 @@ class _LoginForm extends StatelessWidget {
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecorations.authInputDecoration(
-              hintText: 'john.doe@gmail.com',
+              hintText: 'batman@gotham.com',
               labelText: 'Email',
               prefixIcon: Icons.alternate_email_rounded,
             ),
@@ -74,7 +74,7 @@ class _LoginForm extends StatelessWidget {
               RegExp regExp = RegExp(emailPattern);
               return regExp.hasMatch(value ?? '')
                   ? null
-                  : 'El valor ingresado no luce como un email';
+                  : 'El valor ingresado no parece un email';
             },
           ),
           const SizedBox(height: 30),
@@ -91,7 +91,7 @@ class _LoginForm extends StatelessWidget {
             validator: (value) {
               return (value != null && value.length > 5)
                   ? null
-                  : 'La contraseña no puede estar vacía';
+                  : 'La contraseña es necesaria';
             },
           ),
           const SizedBox(height: 30),
@@ -130,7 +130,6 @@ class _LoginForm extends StatelessWidget {
                           'Email o contraseña incorrectos');
                       loginForm.isLoading = false;
                     }
-
                     //
                   },
           ),
