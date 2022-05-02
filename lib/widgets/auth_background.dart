@@ -27,7 +27,8 @@ class _HeaderIcon extends StatelessWidget {
       child: Container(
         width: double.infinity,
         margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
-        child: const Icon(Icons.person_pin, size: 100, color: Colors.white),
+        child: const Icon(Icons.access_alarms_outlined,
+            size: 100, color: Colors.white70),
       ),
     );
   }
@@ -39,7 +40,7 @@ class _TopBox extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
         width: double.infinity,
-        height: size.height * 0.4,
+        height: size.height * 0.5,
         decoration: _topBoxBackground(),
         child: Stack(children: [
           Positioned(child: _Bubble(), top: 90, left: 30),
@@ -55,8 +56,8 @@ class _TopBox extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color.fromRGBO(63, 63, 156, 1),
-            Color.fromRGBO(90, 70, 178, 1)
+            Color.fromARGB(255, 207, 10, 10),
+            Color.fromARGB(255, 48, 22, 163)
           ],
         ),
       );
@@ -70,7 +71,7 @@ class _Bubble extends StatelessWidget {
       height: 100,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: const Color.fromRGBO(255, 255, 255, 0.05)),
+          color: Color.fromARGB(183, 170, 2, 2)),
     );
   }
 }

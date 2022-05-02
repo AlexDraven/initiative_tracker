@@ -7,7 +7,7 @@ import 'package:initiative_tracker/models/models.dart';
 import 'package:http/http.dart' as http;
 
 class CharactersService extends ChangeNotifier {
-  final String _baseUrl = '10.0.2.2:3000';
+  final String _baseUrl = 'https://alex-initiative-tracker.herokuapp.com';
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   final List<Character> characters = [];
 

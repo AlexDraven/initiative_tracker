@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier {
   // 10.0.2.2 es localhost para el emulador de android
-  final String _baseUrl = '10.0.2.2:3000';
+  final String _baseUrl = 'https://alex-initiative-tracker.herokuapp.com';
   final storage = const FlutterSecureStorage();
 
   Future<String?> createUser(
