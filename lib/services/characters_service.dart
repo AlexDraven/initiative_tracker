@@ -66,7 +66,7 @@ class CharactersService extends ChangeNotifier {
 
   Future _updateCharacter(Character character) async {
     final url = Uri.https(_baseUrl, '/characters/${character.id}');
-    final response = await http.put(url,
+    final response = await http.patch(url,
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           'Authorization': 'Bearer ${await _storage.read(key: 'token')}'
