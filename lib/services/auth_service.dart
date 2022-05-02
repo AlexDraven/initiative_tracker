@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class AuthService extends ChangeNotifier {
   // 10.0.2.2 es localhost para el emulador de android
-  final String _baseUrl = 'https://alex-initiative-tracker.herokuapp.com';
+  final String _baseUrl = 'alex-initiative-tracker.herokuapp.com';
   final storage = const FlutterSecureStorage();
 
   Future<String?> createUser(
@@ -18,7 +18,7 @@ class AuthService extends ChangeNotifier {
       'password': password
     };
 
-    final url = Uri.http(_baseUrl, '/users/register');
+    final url = Uri.https(_baseUrl, '/users/register');
     //TODO: change to https
 
     final response = await http.post(url,
@@ -43,7 +43,7 @@ class AuthService extends ChangeNotifier {
       'password': password,
     };
 
-    final url = Uri.http(_baseUrl, '/auth/login');
+    final url = Uri.https(_baseUrl, '/auth/login');
     // TODO: change to https
 
     final response = await http.post(url,

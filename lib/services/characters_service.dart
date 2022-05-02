@@ -7,7 +7,7 @@ import 'package:initiative_tracker/models/models.dart';
 import 'package:http/http.dart' as http;
 
 class CharactersService extends ChangeNotifier {
-  final String _baseUrl = 'https://alex-initiative-tracker.herokuapp.com';
+  final String _baseUrl = 'alex-initiative-tracker.herokuapp.com';
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   final List<Character> characters = [];
 
@@ -26,7 +26,7 @@ class CharactersService extends ChangeNotifier {
   Future<List<Character>> loadCharacters() async {
     isLoading = true;
     notifyListeners();
-    final url = Uri.http(_baseUrl, '/characters');
+    final url = Uri.https(_baseUrl, '/characters');
     //TODO: pasar a https
     final response = await http.get(url, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
@@ -65,7 +65,7 @@ class CharactersService extends ChangeNotifier {
   }
 
   Future _updateCharacter(Character character) async {
-    final url = Uri.http(_baseUrl, '/characters/${character.id}');
+    final url = Uri.https(_baseUrl, '/characters/${character.id}');
     final response = await http.put(url,
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
@@ -85,7 +85,7 @@ class CharactersService extends ChangeNotifier {
   }
 
   Future _createCharacter(Character character) async {
-    final url = Uri.http(_baseUrl, '/characters');
+    final url = Uri.https(_baseUrl, '/characters');
     final response = await http.post(url,
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
