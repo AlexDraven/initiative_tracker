@@ -27,7 +27,6 @@ class CharactersService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     final url = Uri.https(_baseUrl, '/characters');
-    //TODO: pasar a https
     final response = await http.get(url, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
       'Authorization': 'Bearer ${await _storage.read(key: 'token')}'
@@ -48,6 +47,7 @@ class CharactersService extends ChangeNotifier {
       this.characters.clear();
       isLoading = false;
       notifyListeners();
+      // TODO: manejar error 401
       throw Exception('Failed to load characters');
     }
   }
