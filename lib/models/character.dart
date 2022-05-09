@@ -15,6 +15,7 @@ class Character {
     required this.level,
     this.picture,
     required this.description,
+    required this.notes,
     required this.isActive,
     this.createdAt,
     this.updatedAt,
@@ -27,6 +28,7 @@ class Character {
   int level;
   String? picture;
   String description;
+  String notes;
   bool isActive;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -44,6 +46,7 @@ class Character {
         level: json["level"],
         picture: json["picture"],
         description: json["description"],
+        notes: json["notes"],
         isActive: json["isActive"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
@@ -57,6 +60,7 @@ class Character {
         "level": level,
         "picture": picture,
         "description": description,
+        "notes": notes,
         "isActive": isActive,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
@@ -70,6 +74,7 @@ class Character {
         level: level,
         picture: picture,
         description: description,
+        notes: notes,
         isActive: isActive,
         createdAt: createdAt,
         updatedAt: updatedAt,

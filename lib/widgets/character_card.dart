@@ -8,11 +8,11 @@ class CharacterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Container(
-            margin: const EdgeInsets.only(top: 30, bottom: 30),
+            margin: const EdgeInsets.only(top: 10, bottom: 0),
             width: double.infinity,
-            height: 400,
+            height: 300,
             decoration: _cardBorders(),
             child: Stack(
               alignment: Alignment.bottomLeft,
@@ -30,7 +30,7 @@ class CharacterCard extends StatelessWidget {
 
   BoxDecoration _cardBorders() => BoxDecoration(
         color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(15),
         boxShadow: const [
           BoxShadow(
             color: Colors.black12,
@@ -60,11 +60,11 @@ class _RolClassTag extends StatelessWidget {
         ),
       ),
       width: 100,
-      height: 70,
-      decoration: BoxDecoration(
-        color: Colors.yellow[800],
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(25), bottomRight: Radius.circular(25)),
+      height: 50,
+      decoration: const BoxDecoration(
+        color: Color.fromARGB(255, 132, 22, 235),
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
       ),
     );
   }
@@ -86,13 +86,13 @@ class _CharacterLevelTag extends StatelessWidget {
           ),
         ),
         width: 100,
-        height: 70,
+        height: 50,
         alignment: Alignment.center,
         decoration: const BoxDecoration(
             color: Colors.indigo,
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(25),
-                bottomLeft: Radius.circular(25))));
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15))));
   }
 }
 
@@ -109,7 +109,7 @@ class _CharacterDetails extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         width: double.infinity,
-        height: 70,
+        height: 61,
         decoration: _buildBoxDecoration(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,8 +139,8 @@ class _CharacterDetails extends StatelessWidget {
   BoxDecoration _buildBoxDecoration() => const BoxDecoration(
         color: Colors.indigo,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(25),
-          topRight: Radius.circular(25),
+          bottomLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
         ),
       );
 }
@@ -157,7 +157,7 @@ class _BackgroundImage extends StatelessWidget {
       child: Hero(
         tag: character.id!,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(15),
           child: SizedBox(
             width: double.infinity,
             height: 400,

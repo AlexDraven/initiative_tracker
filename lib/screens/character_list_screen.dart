@@ -40,6 +40,7 @@ class CharacterListScreen extends StatelessWidget {
                 name: '',
                 level: 1,
                 description: '',
+                notes: '',
                 race: '',
                 rolClass: '',
                 isActive: true);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:initiative_tracker/models/character.dart';
 import 'package:initiative_tracker/providers/character_form_provider.dart';
 import 'package:initiative_tracker/services/services.dart';
 import 'package:initiative_tracker/widgets/character_image.dart';
@@ -42,15 +43,25 @@ class _CharacterScreenBody extends StatelessWidget {
                   character: charactersService.selectedCharacter,
                 ),
                 Positioned(
-                    top: 60,
+                    top: 40,
                     left: 20,
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back_ios,
                           size: 40, color: Colors.white),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () async {
+                        if (!characterForm.isValidForm()) return;
+                        final String? imageUrl =
+                            await charactersService.uploadImage();
+                        if (imageUrl != null) {
+                          characterForm.character.picture = imageUrl;
+                        }
+                        await charactersService
+                            .saveOrCreateCharacter(characterForm.character);
+                        Navigator.of(context).pop();
+                      },
                     )),
                 Positioned(
-                    top: 60,
+                    top: 40,
                     right: 20,
                     child: IconButton(
                       icon: const Icon(Icons.camera_alt_outlined,
@@ -95,6 +106,7 @@ class _CharacterScreenBody extends StatelessWidget {
                   }
                   await charactersService
                       .saveOrCreateCharacter(characterForm.character);
+                  Navigator.of(context).pop();
                 }),
     );
   }
@@ -108,7 +120,7 @@ class _CharacterForm extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         width: double.infinity,
         decoration: _buildBoxDecoration(),
         child: Form(
@@ -117,7 +129,7 @@ class _CharacterForm extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 TextFormField(
                   initialValue: character.name,
@@ -129,11 +141,11 @@ class _CharacterForm extends StatelessWidget {
                   },
                   decoration: const InputDecoration(
                     hintText: 'Nombre del Personaje',
-                    labelText: 'characterName',
+                    labelText: 'Nombre',
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 5,
                 ),
                 TextFormField(
                   initialValue: '${character.level}',
@@ -150,20 +162,107 @@ class _CharacterForm extends StatelessWidget {
                   },
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    hintText: 'nivel del personaje',
-                    labelText: 'lvl',
+                    hintText: 'Nivel del personaje',
+                    labelText: 'Nivel',
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 5,
                 ),
-                SwitchListTile.adaptive(
-                    value: character.isActive,
-                    title: const Text('Activo'),
-                    activeColor: Colors.indigo,
-                    onChanged: characterForm.updateActive),
+                TextFormField(
+                  initialValue: character.rolClass,
+                  onChanged: (value) => character.rolClass = value,
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Ingrese una clase';
+                  //   }
+                  // },
+                  decoration: const InputDecoration(
+                    hintText: 'Clase del Personaje',
+                    labelText: 'Clase',
+                  ),
+                ),
                 const SizedBox(
-                  height: 30,
+                  height: 5,
+                ),
+                TextFormField(
+                  initialValue: character.race,
+                  onChanged: (value) => character.race = value,
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Ingrese una raza';
+                  //   }
+                  // },
+                  decoration: const InputDecoration(
+                    hintText: 'Raza del Personaje',
+                    labelText: 'Raza',
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  minLines: 1,
+                  maxLines: null,
+                  initialValue: character.description,
+                  onChanged: (value) => character.description = value,
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Descripción';
+                  //   }
+                  // },
+                  decoration: const InputDecoration(
+                    hintText: 'Descripción del Personaje',
+                    labelText: 'Descripción',
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  minLines: 5,
+                  maxLines: null,
+                  initialValue: character.notes,
+                  onChanged: (value) => character.notes = value,
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Notas';
+                  //   }
+                  // },
+                  decoration: const InputDecoration(
+                    hintText: 'Notas del Personaje',
+                    labelText: 'Notas',
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    minimumSize: const Size(400, 40),
+                    backgroundColor: Colors.red,
+                    padding: const EdgeInsets.all(10),
+                  ),
+                  onPressed: () {
+                    deleteCharacterDialog(context, character);
+                  },
+                  child: const Text(
+                    "Eliminar",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // SwitchListTile.adaptive(
+                //     value: character.isActive,
+                //     title: const Text('Activo'),
+                //     activeColor: Colors.indigo,
+                //     onChanged: characterForm.updateActive),
+                const SizedBox(
+                  height: 20,
                 ),
               ],
             )),
@@ -182,4 +281,44 @@ class _CharacterForm extends StatelessWidget {
               blurRadius: 10)
         ],
       );
+
+  deleteCharacterDialog(BuildContext context, Character character) {
+    Widget cancelButton = TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.grey,
+        padding: const EdgeInsets.all(10),
+      ),
+      onPressed: () => Navigator.of(context).pop(),
+      child: const Text(
+        "Cancelar",
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+    Widget continueButton = TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.red,
+        padding: const EdgeInsets.all(10),
+      ),
+      onPressed: () {},
+      child: const Text(
+        "Confirmar",
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text("Eliminar personaje"),
+      content: Text(
+          "¿Está seguro que desea eliminar el personaje '${character.name}'?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }
