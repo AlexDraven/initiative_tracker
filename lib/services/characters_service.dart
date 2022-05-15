@@ -70,6 +70,14 @@ class CharactersService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future deleteCharacter(Character character) async {
+    isSaving = true;
+    notifyListeners();
+    await _deleteCharacter(character);
+    isSaving = false;
+    notifyListeners();
+  }
+
   Future _updateCharacter(Character character) async {
     final url = Uri.https(_baseUrl, '/characters/${character.id}');
     final response = await http.patch(url,
@@ -105,6 +113,24 @@ class CharactersService extends ChangeNotifier {
       notifyListeners();
     } else {
       throw Exception('Failed to create character');
+    }
+  }
+
+  Future _deleteCharacter(Character character) async {
+    final url = Uri.https(_baseUrl, '/characters/${character.id}');
+    final response = await http.delete(url,
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          'Authorization': 'Bearer ${await _storage.read(key: 'token')}'
+        },
+        body: json.encode(character));
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      final index =
+          characters.indexWhere((Character c) => c.id == character.id);
+      characters.removeAt(index);
+      notifyListeners();
+    } else {
+      throw Exception('Failed to delete character');
     }
   }
 

@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
         child: SingleChildScrollView(
             child: Column(children: [
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: MediaQuery.of(context).size.height * 0.2,
           ),
           CardContainer(
               child: Column(children: [
@@ -27,19 +27,17 @@ class LoginScreen extends StatelessWidget {
                 create: (_) => LoginFormProvider(), child: const _LoginForm()),
             //const _LoginForm()
           ])),
-          const SizedBox(height: 50),
-          TextButton(
+          const SizedBox(height: 100),
+          MaterialButton(
             onPressed: () => Navigator.pushReplacementNamed(
                 context, RegisterScreen.routeName),
-            style: ButtonStyle(
-                overlayColor:
-                    MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
-                shape: MaterialStateProperty.all(const StadiumBorder())),
-            child: const Text('Crear una nueva cuenta',
-                style: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 18)),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+              child: const Text(
+                "Crear una nueva cuenta",
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
           ),
           const SizedBox(height: 50),
         ])),
@@ -101,11 +99,6 @@ class _LoginForm extends StatelessWidget {
             disabledColor: Colors.grey,
             elevation: 0,
             color: Colors.deepPurple,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-              child: Text(loginForm.isLoading ? 'Entrando...' : "Ingresar",
-                  style: const TextStyle(color: Colors.white, fontSize: 18)),
-            ),
             onPressed: loginForm.isLoading
                 ? null
                 : () async {
@@ -132,6 +125,11 @@ class _LoginForm extends StatelessWidget {
                     }
                     //
                   },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+              child: Text(loginForm.isLoading ? 'Entrando...' : "Ingresar",
+                  style: const TextStyle(color: Colors.white, fontSize: 18)),
+            ),
           ),
         ],
       ),

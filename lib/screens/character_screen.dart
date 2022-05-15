@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:initiative_tracker/models/character.dart';
 import 'package:initiative_tracker/providers/character_form_provider.dart';
+import 'package:initiative_tracker/screens/screens.dart';
 import 'package:initiative_tracker/services/services.dart';
 import 'package:initiative_tracker/widgets/character_image.dart';
 import 'package:provider/provider.dart';
@@ -81,7 +82,7 @@ class _CharacterScreenBody extends StatelessWidget {
                     ))
               ],
             ),
-            _CharacterForm(),
+            _CharacterForm(charactersService: charactersService),
             const SizedBox(
               height: 100,
             )
@@ -90,11 +91,6 @@ class _CharacterScreenBody extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
-          child: charactersService.isSaving
-              ? const CircularProgressIndicator(
-                  color: Colors.white,
-                )
-              : const Icon(Icons.save_outlined),
           onPressed: charactersService.isSaving
               ? null
               : () async {
@@ -107,12 +103,23 @@ class _CharacterScreenBody extends StatelessWidget {
                   await charactersService
                       .saveOrCreateCharacter(characterForm.character);
                   Navigator.of(context).pop();
-                }),
+                },
+          child: charactersService.isSaving
+              ? const CircularProgressIndicator(
+                  color: Colors.white,
+                )
+              : const Icon(Icons.save_outlined)),
     );
   }
 }
 
 class _CharacterForm extends StatelessWidget {
+  const _CharacterForm({
+    Key? key,
+    required this.charactersService,
+  }) : super(key: key);
+
+  final CharactersService charactersService;
   @override
   Widget build(BuildContext context) {
     final characterForm = Provider.of<CharacterFormProvider>(context);
@@ -299,7 +306,17 @@ class _CharacterForm extends StatelessWidget {
         backgroundColor: Colors.red,
         padding: const EdgeInsets.all(10),
       ),
-      onPressed: () {},
+      onPressed: () async {
+        await charactersService.deleteCharacter(character);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const CharacterListScreen()),
+        );
+        // ignore: use_build_context_synchronously
+        // Navigator.of(context).pop();
+        // TODO : reload list
+      },
       child: const Text(
         "Confirmar",
         style: TextStyle(color: Colors.white),
