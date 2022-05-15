@@ -33,6 +33,12 @@ class MenuWidget extends StatelessWidget {
                 context, ProfileScreen.routeName),
           ),
           ListTile(
+            leading: const Icon(Icons.admin_panel_settings),
+            title: const Text('Player / Master Mode'),
+            onTap: () => Navigator.pushReplacementNamed(
+                context, CharacterListScreen.routeName),
+          ),
+          ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Configuracion'),
             onTap: () => Navigator.pushReplacementNamed(

@@ -53,7 +53,7 @@ class App extends StatelessWidget {
   }
 
   ThemeData _mainTheme() => ThemeData.light().copyWith(
-      scaffoldBackgroundColor: Colors.blueGrey,
+      scaffoldBackgroundColor: Colors.lightBlueAccent[50],
       useMaterial3: true,
       appBarTheme: const AppBarTheme(
         color: Colors.indigoAccent,

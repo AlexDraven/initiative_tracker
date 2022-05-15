@@ -87,11 +87,12 @@ class CharactersService extends ChangeNotifier {
         },
         body: json.encode(character));
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      final data = json.decode(response.body);
-      final Character updatedCharacter = Character.fromJson(data);
-      final index =
-          characters.indexWhere((Character c) => c.id == updatedCharacter.id);
-      characters[index] = updatedCharacter;
+      // final data = json.decode(response.body);
+      // final Character updatedCharacter = Character.fromJson(data);
+      // final index =
+      //     characters.indexWhere((Character c) => c.id == updatedCharacter.id);
+      // characters[index] = updatedCharacter;
+      loadCharacters();
       notifyListeners();
     } else {
       throw Exception('Failed to update character');

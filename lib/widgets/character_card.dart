@@ -21,17 +21,13 @@ class CharacterCard extends StatelessWidget {
                 _CharacterDetails(character),
                 Positioned(
                     top: 0, right: 0, child: _CharacterLevelTag(character)),
-                // ignore: todo
-                // TODO: condicion
-                // Positioned(top: 0, left: 0, child: _CampaignTag(character))
                 Positioned(top: 0, left: 0, child: _CampaignTag(character)),
-                // _CampaignTag(character)
               ],
             )));
   }
 
   BoxDecoration _cardBorders() => BoxDecoration(
-        color: Colors.grey[100],
+        color: Colors.indigoAccent,
         borderRadius: BorderRadius.circular(15),
         boxShadow: const [
           BoxShadow(
@@ -56,7 +52,7 @@ class _CampaignTag extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         width: 300,
-        height: 51,
+        height: 50,
         decoration: const BoxDecoration(
           color: Colors.indigoAccent,
           borderRadius: BorderRadius.only(
@@ -90,13 +86,13 @@ class _CharacterLevelTag extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: 100,
-        height: 51,
+        height: 50,
         alignment: Alignment.center,
         decoration: const BoxDecoration(
             color: Colors.indigo,
             borderRadius: BorderRadius.only(
-                topRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15))),
+              topRight: Radius.circular(15),
+            )),
         child: FittedBox(
           fit: BoxFit.contain,
           child: Padding(
@@ -119,7 +115,7 @@ class _CharacterDetails extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         width: double.infinity,
-        height: 61,
+        height: 67,
         decoration: _buildBoxDecoration(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
