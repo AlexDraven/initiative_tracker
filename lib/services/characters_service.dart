@@ -47,8 +47,14 @@ class CharactersService extends ChangeNotifier {
       this.characters.clear();
       isLoading = false;
       notifyListeners();
-      // TODO: manejar error 401
-      throw Exception('Failed to load characters');
+      if (response.statusCode == 401) {
+        // TODO: handle unauthorized
+        throw Exception('Unauthorized');
+        // restart app
+
+      } else {
+        throw Exception('Failed to load characters');
+      }
     }
   }
 
