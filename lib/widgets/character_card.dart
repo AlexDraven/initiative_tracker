@@ -67,7 +67,7 @@ class _CampaignTag extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              character.description, // TODO: Campaign name
+              character.campaign?.name ?? '',
               style: const TextStyle(
                 fontSize: 18,
                 color: Colors.white,
@@ -125,7 +125,7 @@ class _CharacterDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              character.name,
+              character.name ?? '',
               style: const TextStyle(
                   fontSize: 20,
                   color: Colors.white,
