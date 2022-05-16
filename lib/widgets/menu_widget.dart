@@ -26,7 +26,7 @@ class MenuWidget extends StatelessWidget {
           ),
           Container(
             child: ListTile(
-              title: Text('Modo: ${modeService.getModeName()}'),
+              title: Text('Modo: ${modeService.getModeLabel()}'),
             ),
           ),
           ListTile(

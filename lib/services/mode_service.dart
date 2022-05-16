@@ -24,14 +24,18 @@ class ModeService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeMode(String mode) {
-    currentMode = mode;
-    notifyListeners();
+  void changeMode(String mode) async {
+    if ([modePlayer, modeMaster].contains(mode)) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(modeKey, mode);
+      currentMode = mode;
+      notifyListeners();
+    }
   }
 
-  String getModeName() {
+  String getModeLabel() {
     if (currentMode == modeMaster) {
-      return 'DM';
+      return 'Master';
     } else {
       return 'Jugador';
     }
