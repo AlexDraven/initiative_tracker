@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:initiative_tracker/screens/campaign_list_screen.dart';
+import 'package:initiative_tracker/services/mode_service.dart';
 import 'package:initiative_tracker/share_prefs/user_preferences.dart';
 import 'package:provider/provider.dart';
 import 'screens/screens.dart';
@@ -20,7 +22,8 @@ class AppState extends StatelessWidget {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => AuthService()),
       ChangeNotifierProvider(create: (_) => CharactersService()),
-      ChangeNotifierProvider(create: (_) => InitiativeWsService())
+      ChangeNotifierProvider(create: (_) => InitiativeWsService()),
+      ChangeNotifierProvider(create: (_) => ModeService()),
     ], child: const App());
   }
 }
@@ -33,13 +36,14 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'DnD Initiative Tracker',
+        title: 'Initiative Tracker',
         initialRoute: CheckAuthScreen.routeName,
         routes: {
           LoginScreen.routeName: (context) => LoginScreen(),
           RegisterScreen.routeName: (context) => RegisterScreen(),
           CharacterListScreen.routeName: (context) =>
               const CharacterListScreen(),
+          CampaignListScreen.routeName: (context) => const CampaignListScreen(),
           CharacterScreen.routeName: (context) => const CharacterScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
           SettingsScreen.routeName: (context) => const SettingsScreen(),

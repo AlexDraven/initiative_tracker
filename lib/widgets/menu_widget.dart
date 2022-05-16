@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:initiative_tracker/screens/screens.dart';
+import 'package:initiative_tracker/services/mode_service.dart';
 import 'package:initiative_tracker/services/services.dart';
 import 'package:provider/provider.dart';
+
+import '../screens/campaign_list_screen.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({Key? key}) : super(key: key);
@@ -9,6 +12,7 @@ class MenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
+    final modeService = Provider.of<ModeService>(context, listen: false);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -20,12 +24,23 @@ class MenuWidget extends StatelessWidget {
                     fit: BoxFit.cover)),
             child: Container(),
           ),
-          ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Home'),
-            onTap: () => Navigator.pushReplacementNamed(
-                context, CharacterListScreen.routeName),
+          Container(
+            child: ListTile(
+              title: Text('Modo: ${modeService.getModeName()}'),
+            ),
           ),
+          ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () {
+                if (modeService.currentMode == modeService.modeMaster) {
+                  Navigator.pushReplacementNamed(
+                      context, CampaignListScreen.routeName);
+                } else {
+                  Navigator.pushReplacementNamed(
+                      context, CharacterListScreen.routeName);
+                }
+              }),
           ListTile(
             leading: const Icon(Icons.account_circle),
             title: const Text('Perfil'),
@@ -33,11 +48,19 @@ class MenuWidget extends StatelessWidget {
                 context, ProfileScreen.routeName),
           ),
           ListTile(
-            leading: const Icon(Icons.admin_panel_settings),
-            title: const Text('Player / Master Mode'),
-            onTap: () => Navigator.pushReplacementNamed(
-                context, CharacterListScreen.routeName),
-          ),
+              leading: const Icon(Icons.admin_panel_settings),
+              title: const Text('Player / Master Mode'),
+              onTap: () {
+                if (modeService.currentMode == modeService.modePlayer) {
+                  modeService.changeMode(modeService.modeMaster);
+                  Navigator.pushReplacementNamed(
+                      context, CampaignListScreen.routeName);
+                } else {
+                  modeService.changeMode(modeService.modePlayer);
+                  Navigator.pushReplacementNamed(
+                      context, CharacterListScreen.routeName);
+                }
+              }),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Configuracion'),
