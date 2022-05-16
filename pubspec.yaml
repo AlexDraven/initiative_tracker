@@ -63,7 +63,7 @@ flutter:
   assets:
     - 'assets/images/red_dice.jpg'
     - 'assets/images/dnd_wallpaper-1.jpg'
-    - 'assets/images/jar-loading.gif'
+    - 'assets/images/dados-35.gif'
     - 'assets/images/no-image.png'
     - 'assets/images/ditto.png'
   #   - images/a_dot_ham.jpeg

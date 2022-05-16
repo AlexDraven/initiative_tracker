@@ -10,7 +10,7 @@ class CharacterCard extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Container(
-            margin: const EdgeInsets.only(top: 10, bottom: 0),
+            margin: const EdgeInsets.only(top: 5, bottom: 5),
             width: double.infinity,
             height: 450,
             decoration: _cardBorders(),
@@ -174,8 +174,7 @@ class _BackgroundImage extends StatelessWidget {
                     image: AssetImage('assets/images/ditto.png'),
                     fit: BoxFit.cover)
                 : FadeInImage(
-                    placeholder:
-                        const AssetImage('assets/images/jar-loading.gif'),
+                    placeholder: const AssetImage('assets/images/dados-35.gif'),
                     image: NetworkImage(character.picture!),
                     fit: BoxFit.cover,
                   ),

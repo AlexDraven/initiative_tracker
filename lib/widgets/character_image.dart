@@ -53,7 +53,7 @@ class CharacterImage extends StatelessWidget {
 
     if (picture.startsWith('http')) {
       return FadeInImage(
-        placeholder: const AssetImage('assets/images/jar-loading.gif'),
+        placeholder: const AssetImage('assets/images/dados-35.gif'),
         image: NetworkImage(picture),
         fit: BoxFit.cover,
       );
