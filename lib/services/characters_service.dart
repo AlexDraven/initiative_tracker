@@ -34,7 +34,7 @@ class CharactersService extends ChangeNotifier {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
-      print(data);
+
       final List<Character> characters = data.map((dynamic item) {
         return Character.fromJson(item);
       }).toList();
@@ -44,7 +44,7 @@ class CharactersService extends ChangeNotifier {
       notifyListeners();
       return characters;
     } else {
-      this.characters.clear();
+      characters.clear();
       isLoading = false;
       notifyListeners();
       if (response.statusCode == 401) {

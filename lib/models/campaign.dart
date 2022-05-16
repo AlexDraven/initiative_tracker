@@ -1,14 +1,14 @@
 class Campaign {
   int? id;
   String? name;
-  Null? code;
-  Null? picture;
+  String? code;
+  String? picture;
   String? description;
   String? notes;
   bool? isActive;
   String? createdAt;
   String? updatedAt;
-  Null? deletedAt;
+  String? deletedAt;
 
   Campaign(
       {this.id,
@@ -36,17 +36,17 @@ class Campaign {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['code'] = this.code;
-    data['picture'] = this.picture;
-    data['description'] = this.description;
-    data['notes'] = this.notes;
-    data['isActive'] = this.isActive;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['deletedAt'] = this.deletedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['code'] = code;
+    data['picture'] = picture;
+    data['description'] = description;
+    data['notes'] = notes;
+    data['isActive'] = isActive;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['deletedAt'] = deletedAt;
     return data;
   }
 }

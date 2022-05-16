@@ -14,11 +14,11 @@ class MenuWidget extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Container(),
             decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/images/dnd_wallpaper-1.jpg'),
                     fit: BoxFit.cover)),
+            child: Container(),
           ),
           ListTile(
             leading: const Icon(Icons.home),

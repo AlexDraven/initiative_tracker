@@ -13,6 +13,7 @@ class CharacterListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final charactersService = Provider.of<CharactersService>(context);
+    // ignore: unused_local_variable
     final initiativeWsService = Provider.of<InitiativeWsService>(context);
 
     if (charactersService.isLoading) return const LoadingScreen();

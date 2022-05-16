@@ -144,6 +144,10 @@ class _CharacterForm extends StatelessWidget {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Ingrese un nombre';
+                    } else if (value.length > 25) {
+                      return 'El nombre es muy largo';
+                    } else {
+                      return null;
                     }
                   },
                   decoration: const InputDecoration(

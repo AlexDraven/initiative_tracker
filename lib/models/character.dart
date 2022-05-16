@@ -4,7 +4,6 @@
 //
 //     final character = characterFromJson(jsonString);
 
-import 'dart:convert';
 import 'package:initiative_tracker/models/campaign.dart';
 import 'package:initiative_tracker/models/user.dart';
 
@@ -22,7 +21,7 @@ class Character {
   bool? isActive;
   String? createdAt;
   String? updatedAt;
-  Null? deletedAt;
+  String? deletedAt;
   Campaign? campaign;
   User? user;
 
@@ -55,31 +54,30 @@ class Character {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     deletedAt = json['deletedAt'];
-    campaign = json['campaign'] != null
-        ? new Campaign.fromJson(json['campaign'])
-        : null;
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    campaign =
+        json['campaign'] != null ? Campaign.fromJson(json['campaign']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['rolClass'] = this.rolClass;
-    data['race'] = this.race;
-    data['level'] = this.level;
-    data['picture'] = this.picture;
-    data['description'] = this.description;
-    data['notes'] = this.notes;
-    data['isActive'] = this.isActive;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['deletedAt'] = this.deletedAt;
-    if (this.campaign != null) {
-      data['campaign'] = this.campaign!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['rolClass'] = rolClass;
+    data['race'] = race;
+    data['level'] = level;
+    data['picture'] = picture;
+    data['description'] = description;
+    data['notes'] = notes;
+    data['isActive'] = isActive;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['deletedAt'] = deletedAt;
+    if (campaign != null) {
+      data['campaign'] = campaign!.toJson();
     }
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
     return data;
   }

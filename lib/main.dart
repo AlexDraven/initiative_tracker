@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:initiative_tracker/share_prefs/user_preferences.dart';
 import 'package:provider/provider.dart';
-import 'custom_http_overrides.dart';
 import 'screens/screens.dart';
 import 'services/services.dart';
 

@@ -19,7 +19,6 @@ class AuthService extends ChangeNotifier {
     };
 
     final url = Uri.https(_baseUrl, '/users/register');
-    //TODO: change to https
 
     final response = await http.post(url,
         headers: {'Content-Type': 'application/json'},
@@ -44,7 +43,6 @@ class AuthService extends ChangeNotifier {
     };
 
     final url = Uri.https(_baseUrl, '/auth/login');
-    // TODO: change to https
 
     final response = await http.post(url,
         headers: {'Content-Type': 'application/json'},
