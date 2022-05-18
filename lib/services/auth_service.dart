@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class AuthService extends ChangeNotifier {
   // 10.0.2.2 es localhost para el emulador de android
@@ -63,7 +64,41 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> readToken() async {
-    return await storage.read(key: 'token') ?? '';
+  // Get valid token from the storage
+  Future<String?> readToken() async {
+    final token = await storage.read(key: 'token');
+    if (token != null) {
+      if (JwtDecoder.tryDecode(token) == null) {
+        await storage.delete(key: 'token');
+        return null;
+      }
+      final isExpired = JwtDecoder.isExpired(token);
+      if (isExpired) {
+        await storage.delete(key: 'token');
+        return null;
+      } else {
+        return token;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> refreshToken() async {
+    throw UnimplementedError();
+    // final String token = await readToken();
+    // final Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    // final String refreshToken = decodedToken['refreshToken'];
+    // final Map<String, dynamic> refreshData = {'refreshToken': refreshToken};
+    // final url = Uri.https(_baseUrl, '/auth/refresh');
+    // final response = await http.post(url,
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: json.encode(refreshData));
+    // final Map<String, dynamic> decodedResp = json.decode(response.body);
+    // if (response.statusCode >= 200 && response.statusCode < 300) {
+    //   await storage.write(key: 'token', value: decodedResp['token']);
+    // } else {
+    //   throw Exception('Error al refrescar el token');
+    // }
   }
 }

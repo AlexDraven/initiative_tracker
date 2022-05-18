@@ -5,10 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:initiative_tracker/models/models.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:provider/provider.dart';
+
+import 'auth_service.dart';
 
 class CharactersService extends ChangeNotifier {
   final String _baseUrl = 'alex-initiative-tracker.herokuapp.com';
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  final authService = AuthService();
+
   final List<Character> characters = [];
 
   late Character selectedCharacter;
@@ -27,11 +32,11 @@ class CharactersService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     final url = Uri.https(_baseUrl, '/characters');
+    final token = await authService.readToken();
     final response = await http.get(url, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
-      'Authorization': 'Bearer ${await _storage.read(key: 'token')}'
+      'Authorization': 'Bearer $token'
     });
-
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
 
@@ -83,7 +88,7 @@ class CharactersService extends ChangeNotifier {
     final response = await http.patch(url,
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
-          'Authorization': 'Bearer ${await _storage.read(key: 'token')}'
+          'Authorization': 'Bearer ${await authService.readToken()}'
         },
         body: json.encode(character));
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -104,7 +109,7 @@ class CharactersService extends ChangeNotifier {
     final response = await http.post(url,
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
-          'Authorization': 'Bearer ${await _storage.read(key: 'token')}'
+          'Authorization': 'Bearer ${await authService.readToken()}'
         },
         body: json.encode(character));
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -122,7 +127,7 @@ class CharactersService extends ChangeNotifier {
     final response = await http.delete(url,
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
-          'Authorization': 'Bearer ${await _storage.read(key: 'token')}'
+          'Authorization': 'Bearer ${await authService.readToken()}'
         },
         body: json.encode(character));
     if (response.statusCode >= 200 && response.statusCode < 300) {

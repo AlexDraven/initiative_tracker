@@ -1,9 +1,12 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:initiative_tracker/screens/campaign_list_screen.dart';
 import 'package:initiative_tracker/screens/screens.dart';
 import 'package:initiative_tracker/services/mode_service.dart';
 import 'package:initiative_tracker/services/services.dart';
 import 'package:provider/provider.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class CheckAuthScreen extends StatelessWidget {
   static const String routeName = '/checking-auth';
@@ -17,11 +20,11 @@ class CheckAuthScreen extends StatelessWidget {
       body: Center(
         child: FutureBuilder(
           future: authService.readToken(),
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
             if (!snapshot.hasData) {
               return const CircularProgressIndicator();
             }
-            if (snapshot.data == '') {
+            if (snapshot.data == null) {
               Future.microtask(() {
                 Navigator.pushReplacement(
                     context,
@@ -62,7 +65,6 @@ class CheckAuthScreen extends StatelessWidget {
                 }
               });
             }
-
             return Container();
           },
         ),
