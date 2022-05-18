@@ -22,6 +22,7 @@ class AppState extends StatelessWidget {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => AuthService()),
       ChangeNotifierProvider(create: (_) => CharactersService()),
+      ChangeNotifierProvider(create: (_) => CampaignsService()),
       ChangeNotifierProvider(create: (_) => InitiativeWsService()),
       ChangeNotifierProvider(create: (_) => ModeService()),
     ], child: const App());
@@ -45,6 +46,7 @@ class App extends StatelessWidget {
               const CharacterListScreen(),
           CampaignListScreen.routeName: (context) => const CampaignListScreen(),
           CharacterScreen.routeName: (context) => const CharacterScreen(),
+          CampaignScreen.routeName: (context) => const CampaignScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
           SettingsScreen.routeName: (context) => const SettingsScreen(),
           CheckAuthScreen.routeName: (context) => const CheckAuthScreen(),

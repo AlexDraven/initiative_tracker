@@ -9,6 +9,7 @@ class AuthService extends ChangeNotifier {
   // 10.0.2.2 es localhost para el emulador de android
   final String _baseUrl = 'alex-initiative-tracker.herokuapp.com';
   final storage = const FlutterSecureStorage();
+  String username = 'Invitado';
 
   Future<String?> createUser(
       String firstname, String lastname, String email, String password) async {
@@ -53,6 +54,11 @@ class AuthService extends ChangeNotifier {
 
     if (decodedResp.containsKey('token')) {
       await storage.write(key: 'token', value: decodedResp['token']);
+      String token = await storage.read(key: 'token') ?? '';
+      final Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+      this.username = decodedToken['username'];
+      print(' USERNAME: $username');
+      notifyListeners();
       return null;
     } else {
       return decodedResp['message'][0];
@@ -61,26 +67,30 @@ class AuthService extends ChangeNotifier {
 
   Future<void> logout() async {
     await storage.delete(key: 'token');
+    username = 'InvitadoLogouteasdo';
     notifyListeners();
   }
 
   // Get valid token from the storage
-  Future<String?> readToken() async {
+  Future<String> readToken() async {
     final token = await storage.read(key: 'token');
+    print('readToken - Token: $token');
     if (token != null) {
       if (JwtDecoder.tryDecode(token) == null) {
         await storage.delete(key: 'token');
-        return null;
+        return '';
+      } else {
+        username = JwtDecoder.decode(token)['username'];
       }
       final isExpired = JwtDecoder.isExpired(token);
       if (isExpired) {
         await storage.delete(key: 'token');
-        return null;
+        return '';
       } else {
         return token;
       }
     } else {
-      return null;
+      return '';
     }
   }
 

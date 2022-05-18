@@ -1,37 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:initiative_tracker/models/character.dart';
-import 'package:initiative_tracker/providers/character_form_provider.dart';
+import 'package:initiative_tracker/models/campaign.dart';
+import 'package:initiative_tracker/providers/campaign_form_provider.dart';
 import 'package:initiative_tracker/screens/screens.dart';
 import 'package:initiative_tracker/services/services.dart';
-import 'package:initiative_tracker/widgets/character_image.dart';
+import 'package:initiative_tracker/widgets/campaign_image.dart';
 import 'package:provider/provider.dart';
 
-class CharacterScreen extends StatelessWidget {
-  const CharacterScreen({Key? key}) : super(key: key);
-  static const String routeName = '/character';
+class CampaignScreen extends StatelessWidget {
+  const CampaignScreen({Key? key}) : super(key: key);
+  static const String routeName = '/campaign';
   @override
   Widget build(BuildContext context) {
-    final charactersService = Provider.of<CharactersService>(context);
+    final campaignsService = Provider.of<CampaignsService>(context);
     return ChangeNotifierProvider(
         create: (context) =>
-            CharacterFormProvider(charactersService.selectedCharacter),
-        child: _CharacterScreenBody(charactersService: charactersService));
+            CampaignFormProvider(campaignsService.selectedCampaign),
+        child: _CampaignScreenBody(campaignsService: campaignsService));
   }
 }
 
-class _CharacterScreenBody extends StatelessWidget {
-  const _CharacterScreenBody({
+class _CampaignScreenBody extends StatelessWidget {
+  const _CampaignScreenBody({
     Key? key,
-    required this.charactersService,
+    required this.campaignsService,
   }) : super(key: key);
 
-  final CharactersService charactersService;
+  final CampaignsService campaignsService;
 
   @override
   Widget build(BuildContext context) {
-    final characterForm = Provider.of<CharacterFormProvider>(context);
+    final campaignForm = Provider.of<CampaignFormProvider>(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -40,8 +40,8 @@ class _CharacterScreenBody extends StatelessWidget {
           children: [
             Stack(
               children: [
-                CharacterImage(
-                  character: charactersService.selectedCharacter,
+                CampaignImage(
+                  campaign: campaignsService.selectedCampaign,
                 ),
                 Positioned(
                     top: 40,
@@ -50,14 +50,14 @@ class _CharacterScreenBody extends StatelessWidget {
                       icon: const Icon(Icons.arrow_back_ios,
                           size: 40, color: Colors.white),
                       onPressed: () async {
-                        if (!characterForm.isValidForm()) return;
+                        if (!campaignForm.isValidForm()) return;
                         final String? imageUrl =
-                            await charactersService.uploadImage();
+                            await campaignsService.uploadImage();
                         if (imageUrl != null) {
-                          characterForm.character.picture = imageUrl;
+                          campaignForm.campaign.picture = imageUrl;
                         }
-                        await charactersService
-                            .saveOrCreateCharacter(characterForm.character);
+                        await campaignsService
+                            .saveOrCreateCampaign(campaignForm.campaign);
                         Navigator.of(context).pop();
                       },
                     )),
@@ -76,13 +76,13 @@ class _CharacterScreenBody extends StatelessWidget {
                           print('no selecciono nada');
                           return;
                         }
-                        charactersService
-                            .updateSelectedCharacterImage(pickedFile.path);
+                        campaignsService
+                            .updateSelectedCampaignImage(pickedFile.path);
                       },
                     ))
               ],
             ),
-            _CharacterForm(charactersService: charactersService),
+            _CampaignForm(campaignsService: campaignsService),
             const SizedBox(
               height: 100,
             )
@@ -91,20 +91,19 @@ class _CharacterScreenBody extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
-          onPressed: charactersService.isSaving
+          onPressed: campaignsService.isSaving
               ? null
               : () async {
-                  if (!characterForm.isValidForm()) return;
-                  final String? imageUrl =
-                      await charactersService.uploadImage();
+                  if (!campaignForm.isValidForm()) return;
+                  final String? imageUrl = await campaignsService.uploadImage();
                   if (imageUrl != null) {
-                    characterForm.character.picture = imageUrl;
+                    campaignForm.campaign.picture = imageUrl;
                   }
-                  await charactersService
-                      .saveOrCreateCharacter(characterForm.character);
+                  await campaignsService
+                      .saveOrCreateCampaign(campaignForm.campaign);
                   Navigator.of(context).pop();
                 },
-          child: charactersService.isSaving
+          child: campaignsService.isSaving
               ? const CircularProgressIndicator(
                   color: Colors.white,
                 )
@@ -113,17 +112,17 @@ class _CharacterScreenBody extends StatelessWidget {
   }
 }
 
-class _CharacterForm extends StatelessWidget {
-  const _CharacterForm({
+class _CampaignForm extends StatelessWidget {
+  const _CampaignForm({
     Key? key,
-    required this.charactersService,
+    required this.campaignsService,
   }) : super(key: key);
 
-  final CharactersService charactersService;
+  final CampaignsService campaignsService;
   @override
   Widget build(BuildContext context) {
-    final characterForm = Provider.of<CharacterFormProvider>(context);
-    final character = characterForm.character;
+    final campaignForm = Provider.of<CampaignFormProvider>(context);
+    final campaign = campaignForm.campaign;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Container(
@@ -131,7 +130,7 @@ class _CharacterForm extends StatelessWidget {
         width: double.infinity,
         decoration: _buildBoxDecoration(),
         child: Form(
-            key: characterForm.formKey,
+            key: campaignForm.formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               children: [
@@ -139,8 +138,8 @@ class _CharacterForm extends StatelessWidget {
                   height: 5,
                 ),
                 TextFormField(
-                  initialValue: character.name,
-                  onChanged: (value) => character.name = value,
+                  initialValue: campaign.name,
+                  onChanged: (value) => campaign.name = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Ingrese un nombre';
@@ -151,64 +150,64 @@ class _CharacterForm extends StatelessWidget {
                     }
                   },
                   decoration: const InputDecoration(
-                    hintText: 'Nombre del Personaje',
+                    hintText: 'Nombre de la campaña',
                     labelText: 'Nombre',
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextFormField(
-                  initialValue: '${character.level}',
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                        RegExp(r'^(\d+)?\.?\d{0,2}'))
-                  ],
-                  onChanged: (value) {
-                    if (int.tryParse(value) == null) {
-                      character.level = 0;
-                    } else {
-                      character.level = int.parse(value);
-                    }
-                  },
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    hintText: 'Nivel del personaje',
-                    labelText: 'Nivel',
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextFormField(
-                  initialValue: character.rolClass,
-                  onChanged: (value) => character.rolClass = value,
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Ingrese una clase';
-                  //   }
-                  // },
-                  decoration: const InputDecoration(
-                    hintText: 'Clase del Personaje',
-                    labelText: 'Clase',
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextFormField(
-                  initialValue: character.race,
-                  onChanged: (value) => character.race = value,
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Ingrese una raza';
-                  //   }
-                  // },
-                  decoration: const InputDecoration(
-                    hintText: 'Raza del Personaje',
-                    labelText: 'Raza',
-                  ),
-                ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // TextFormField(
+                //   initialValue: '${campaign.level}',
+                //   inputFormatters: [
+                //     FilteringTextInputFormatter.allow(
+                //         RegExp(r'^(\d+)?\.?\d{0,2}'))
+                //   ],
+                //   onChanged: (value) {
+                //     if (int.tryParse(value) == null) {
+                //       campaign.level = 0;
+                //     } else {
+                //       campaign.level = int.parse(value);
+                //     }
+                //   },
+                //   keyboardType: TextInputType.number,
+                //   decoration: const InputDecoration(
+                //     hintText: 'Nivel del personaje',
+                //     labelText: 'Nivel',
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // TextFormField(
+                //   initialValue: campaign.rolClass,
+                //   onChanged: (value) => campaign.rolClass = value,
+                //   // validator: (value) {
+                //   //   if (value == null || value.isEmpty) {
+                //   //     return 'Ingrese una clase';
+                //   //   }
+                //   // },
+                //   decoration: const InputDecoration(
+                //     hintText: 'Clase del Personaje',
+                //     labelText: 'Clase',
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // TextFormField(
+                //   initialValue: campaign.race,
+                //   onChanged: (value) => campaign.race = value,
+                //   // validator: (value) {
+                //   //   if (value == null || value.isEmpty) {
+                //   //     return 'Ingrese una raza';
+                //   //   }
+                //   // },
+                //   decoration: const InputDecoration(
+                //     hintText: 'Raza del Personaje',
+                //     labelText: 'Raza',
+                //   ),
+                // ),
                 const SizedBox(
                   height: 5,
                 ),
@@ -216,15 +215,15 @@ class _CharacterForm extends StatelessWidget {
                   keyboardType: TextInputType.multiline,
                   minLines: 1,
                   maxLines: null,
-                  initialValue: character.description,
-                  onChanged: (value) => character.description = value,
+                  initialValue: campaign.description,
+                  onChanged: (value) => campaign.description = value,
                   // validator: (value) {
                   //   if (value == null || value.isEmpty) {
                   //     return 'Descripción';
                   //   }
                   // },
                   decoration: const InputDecoration(
-                    hintText: 'Descripción del Personaje',
+                    hintText: 'Descripción de la campaña',
                     labelText: 'Descripción',
                   ),
                 ),
@@ -235,15 +234,15 @@ class _CharacterForm extends StatelessWidget {
                   keyboardType: TextInputType.multiline,
                   minLines: 5,
                   maxLines: null,
-                  initialValue: character.notes,
-                  onChanged: (value) => character.notes = value,
+                  initialValue: campaign.notes,
+                  onChanged: (value) => campaign.notes = value,
                   // validator: (value) {
                   //   if (value == null || value.isEmpty) {
                   //     return 'Notas';
                   //   }
                   // },
                   decoration: const InputDecoration(
-                    hintText: 'Notas del Personaje',
+                    hintText: 'Notas de la campaña',
                     labelText: 'Notas',
                   ),
                 ),
@@ -257,7 +256,7 @@ class _CharacterForm extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                   ),
                   onPressed: () {
-                    deleteCharacterDialog(context, character);
+                    deleteCampaignDialog(context, campaign);
                   },
                   child: const Text(
                     "Eliminar",
@@ -268,10 +267,10 @@ class _CharacterForm extends StatelessWidget {
                 //   height: 5,
                 // ),
                 // SwitchListTile.adaptive(
-                //     value: character.isActive,
+                //     value: campaign.isActive,
                 //     title: const Text('Activo'),
                 //     activeColor: Colors.indigo,
-                //     onChanged: characterForm.updateActive),
+                //     onChanged: campaignForm.updateActive),
                 const SizedBox(
                   height: 20,
                 ),
@@ -293,7 +292,7 @@ class _CharacterForm extends StatelessWidget {
         ],
       );
 
-  deleteCharacterDialog(BuildContext context, Character character) {
+  deleteCampaignDialog(BuildContext context, Campaign campaign) {
     Widget cancelButton = TextButton(
       style: TextButton.styleFrom(
         backgroundColor: Colors.grey,
@@ -311,11 +310,11 @@ class _CharacterForm extends StatelessWidget {
         padding: const EdgeInsets.all(10),
       ),
       onPressed: () async {
-        await charactersService.deleteCharacter(character);
+        await campaignsService.deleteCampaign(campaign);
 
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const CharacterListScreen()),
+          MaterialPageRoute(builder: (context) => const CampaignListScreen()),
         );
         // ignore: use_build_context_synchronously
         // Navigator.of(context).pop();
@@ -329,7 +328,7 @@ class _CharacterForm extends StatelessWidget {
     AlertDialog alert = AlertDialog(
       title: const Text("Eliminar personaje"),
       content: Text(
-          "¿Está seguro que desea eliminar el personaje '${character.name}'?"),
+          "¿Está seguro que desea eliminar el personaje '${campaign.name}'?"),
       actions: [
         cancelButton,
         continueButton,

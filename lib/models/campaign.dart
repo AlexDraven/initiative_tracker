@@ -49,4 +49,15 @@ class Campaign {
     data['deletedAt'] = deletedAt;
     return data;
   }
+
+  Campaign copy() => Campaign(
+        id: id,
+        name: name,
+        picture: picture,
+        description: description,
+        notes: notes,
+        isActive: isActive,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
 }

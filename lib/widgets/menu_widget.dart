@@ -22,13 +22,25 @@ class MenuWidget extends StatelessWidget {
                 image: DecorationImage(
                     image: AssetImage('assets/images/dnd_wallpaper-1.jpg'),
                     fit: BoxFit.cover)),
-            child: Container(),
-          ),
-          Container(
-            child: ListTile(
-              title: Text('Modo: ${modeService.getModeLabel()}'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  authService.username,
+                  style: const TextStyle(
+                      color: Color.fromARGB(255, 185, 0, 0),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      backgroundColor: Color.fromARGB(125, 0, 0, 0)),
+                ),
+              ],
             ),
           ),
+          Text('Modo: ${modeService.getModeLabel()}',
+              style: const TextStyle(
+                  fontSize: 14,
+                  color: Color.fromARGB(255, 185, 0, 0),
+                  fontWeight: FontWeight.bold)),
           ListTile(
               leading: const Icon(Icons.home),
               title: const Text('Home'),
@@ -49,7 +61,10 @@ class MenuWidget extends StatelessWidget {
           ),
           ListTile(
               leading: const Icon(Icons.admin_panel_settings),
-              title: const Text('Player / Master Mode'),
+              title: Text((modeService.currentMode == modeService.modePlayer
+                      ? 'Player'
+                      : 'Master') +
+                  ' Mode'),
               onTap: () {
                 if (modeService.currentMode == modeService.modePlayer) {
                   modeService.changeMode(modeService.modeMaster);
@@ -70,8 +85,8 @@ class MenuWidget extends StatelessWidget {
           ListTile(
               leading: const Icon(Icons.exit_to_app),
               title: const Text('Salir'),
-              onTap: () {
-                authService.logout();
+              onTap: () async {
+                await authService.logout();
                 Navigator.pushReplacementNamed(context, LoginScreen.routeName);
               }),
         ],

@@ -24,7 +24,7 @@ class CheckAuthScreen extends StatelessWidget {
             if (!snapshot.hasData) {
               return const CircularProgressIndicator();
             }
-            if (snapshot.data == null) {
+            if (snapshot.data == '') {
               Future.microtask(() {
                 Navigator.pushReplacement(
                     context,

@@ -10,6 +10,12 @@ class CharacterListScreen extends StatelessWidget {
 
   static const String routeName = '/characterList';
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Provider.of<CharacterListProvider>(context, listen: false).loadCharacters();
+  // }
+
   @override
   Widget build(BuildContext context) {
     final charactersService = Provider.of<CharactersService>(context);
@@ -23,17 +29,24 @@ class CharacterListScreen extends StatelessWidget {
           title: const Center(child: Text('Characters')),
         ),
         drawer: const MenuWidget(),
-        body: ListView.builder(
-          itemCount: charactersService.characters.length,
-          itemBuilder: (BuildContext context, int index) => GestureDetector(
-              child:
-                  CharacterCard(character: charactersService.characters[index]),
-              onTap: () {
-                charactersService.selectedCharacter =
-                    charactersService.characters[index].copy();
-                Navigator.pushNamed(context, CharacterScreen.routeName);
-              }),
-        ),
+        body: charactersService.characters.length > 0
+            ? ListView.builder(
+                itemCount: charactersService.characters.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    GestureDetector(
+                        child: CharacterCard(
+                            character: charactersService.characters[index]),
+                        onTap: () {
+                          charactersService.selectedCharacter =
+                              charactersService.characters[index].copy();
+                          Navigator.pushNamed(
+                              context, CharacterScreen.routeName);
+                        }),
+              )
+            : const Center(
+                child: Text('Aún no tienes personajes',
+                    style: TextStyle(fontSize: 20)),
+              ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
