@@ -89,25 +89,25 @@ class _CampaignScreenBody extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FloatingActionButton(
-          onPressed: campaignsService.isSaving
-              ? null
-              : () async {
-                  if (!campaignForm.isValidForm()) return;
-                  final String? imageUrl = await campaignsService.uploadImage();
-                  if (imageUrl != null) {
-                    campaignForm.campaign.picture = imageUrl;
-                  }
-                  await campaignsService
-                      .saveOrCreateCampaign(campaignForm.campaign);
-                  Navigator.of(context).pop();
-                },
-          child: campaignsService.isSaving
-              ? const CircularProgressIndicator(
-                  color: Colors.white,
-                )
-              : const Icon(Icons.save_outlined)),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      // floatingActionButton: FloatingActionButton(
+      //     onPressed: campaignsService.isSaving
+      //         ? null
+      //         : () async {
+      //             if (!campaignForm.isValidForm()) return;
+      //             final String? imageUrl = await campaignsService.uploadImage();
+      //             if (imageUrl != null) {
+      //               campaignForm.campaign.picture = imageUrl;
+      //             }
+      //             await campaignsService
+      //                 .saveOrCreateCampaign(campaignForm.campaign);
+      //             Navigator.of(context).pop();
+      //           },
+      //     child: campaignsService.isSaving
+      //         ? const CircularProgressIndicator(
+      //             color: Colors.white,
+      //           )
+      //         : const Icon(Icons.save_outlined)),
     );
   }
 }
@@ -143,7 +143,7 @@ class _CampaignForm extends StatelessWidget {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Ingrese un nombre';
-                    } else if (value.length > 25) {
+                    } else if (value.length > 50) {
                       return 'El nombre es muy largo';
                     } else {
                       return null;
@@ -154,60 +154,6 @@ class _CampaignForm extends StatelessWidget {
                     labelText: 'Nombre',
                   ),
                 ),
-                // const SizedBox(
-                //   height: 5,
-                // ),
-                // TextFormField(
-                //   initialValue: '${campaign.level}',
-                //   inputFormatters: [
-                //     FilteringTextInputFormatter.allow(
-                //         RegExp(r'^(\d+)?\.?\d{0,2}'))
-                //   ],
-                //   onChanged: (value) {
-                //     if (int.tryParse(value) == null) {
-                //       campaign.level = 0;
-                //     } else {
-                //       campaign.level = int.parse(value);
-                //     }
-                //   },
-                //   keyboardType: TextInputType.number,
-                //   decoration: const InputDecoration(
-                //     hintText: 'Nivel del personaje',
-                //     labelText: 'Nivel',
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 5,
-                // ),
-                // TextFormField(
-                //   initialValue: campaign.rolClass,
-                //   onChanged: (value) => campaign.rolClass = value,
-                //   // validator: (value) {
-                //   //   if (value == null || value.isEmpty) {
-                //   //     return 'Ingrese una clase';
-                //   //   }
-                //   // },
-                //   decoration: const InputDecoration(
-                //     hintText: 'Clase del Personaje',
-                //     labelText: 'Clase',
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 5,
-                // ),
-                // TextFormField(
-                //   initialValue: campaign.race,
-                //   onChanged: (value) => campaign.race = value,
-                //   // validator: (value) {
-                //   //   if (value == null || value.isEmpty) {
-                //   //     return 'Ingrese una raza';
-                //   //   }
-                //   // },
-                //   decoration: const InputDecoration(
-                //     hintText: 'Raza del Personaje',
-                //     labelText: 'Raza',
-                //   ),
-                // ),
                 const SizedBox(
                   height: 5,
                 ),
@@ -217,14 +163,26 @@ class _CampaignForm extends StatelessWidget {
                   maxLines: null,
                   initialValue: campaign.description,
                   onChanged: (value) => campaign.description = value,
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Descripción';
-                  //   }
-                  // },
                   decoration: const InputDecoration(
                     hintText: 'Descripción de la campaña',
                     labelText: 'Descripción',
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    minimumSize: const Size(400, 40),
+                    backgroundColor: Colors.green,
+                  ),
+                  onPressed: () {
+                    // TODO: Open initiative screen
+                    print('OPEN INITIATIVE SCREEN');
+                  },
+                  child: const Text(
+                    "Roll Initiative!",
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
                 const SizedBox(
@@ -236,11 +194,6 @@ class _CampaignForm extends StatelessWidget {
                   maxLines: null,
                   initialValue: campaign.notes,
                   onChanged: (value) => campaign.notes = value,
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Notas';
-                  //   }
-                  // },
                   decoration: const InputDecoration(
                     hintText: 'Notas de la campaña',
                     labelText: 'Notas',
@@ -252,25 +205,19 @@ class _CampaignForm extends StatelessWidget {
                 TextButton(
                   style: TextButton.styleFrom(
                     minimumSize: const Size(400, 40),
-                    backgroundColor: Colors.red,
+                    backgroundColor: Colors.blue,
                     padding: const EdgeInsets.all(10),
                   ),
                   onPressed: () {
-                    deleteCampaignDialog(context, campaign);
+                    // TODO: Open admin  screen
+                    print('OPEN ADMIN SCREEN');
+                    Navigator.pushNamed(context, CampaignAdminScreen.routeName);
                   },
                   child: const Text(
-                    "Eliminar",
+                    "Administrar",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                // const SizedBox(
-                //   height: 5,
-                // ),
-                // SwitchListTile.adaptive(
-                //     value: campaign.isActive,
-                //     title: const Text('Activo'),
-                //     activeColor: Colors.indigo,
-                //     onChanged: campaignForm.updateActive),
                 const SizedBox(
                   height: 20,
                 ),
@@ -291,54 +238,4 @@ class _CampaignForm extends StatelessWidget {
               blurRadius: 10)
         ],
       );
-
-  deleteCampaignDialog(BuildContext context, Campaign campaign) {
-    Widget cancelButton = TextButton(
-      style: TextButton.styleFrom(
-        backgroundColor: Colors.grey,
-        padding: const EdgeInsets.all(10),
-      ),
-      onPressed: () => Navigator.of(context).pop(),
-      child: const Text(
-        "Cancelar",
-        style: TextStyle(color: Colors.white),
-      ),
-    );
-    Widget continueButton = TextButton(
-      style: TextButton.styleFrom(
-        backgroundColor: Colors.red,
-        padding: const EdgeInsets.all(10),
-      ),
-      onPressed: () async {
-        await campaignsService.deleteCampaign(campaign);
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const CampaignListScreen()),
-        );
-        // ignore: use_build_context_synchronously
-        // Navigator.of(context).pop();
-        // TODO : reload list
-      },
-      child: const Text(
-        "Confirmar",
-        style: TextStyle(color: Colors.white),
-      ),
-    );
-    AlertDialog alert = AlertDialog(
-      title: const Text("Eliminar personaje"),
-      content: Text(
-          "¿Está seguro que desea eliminar el personaje '${campaign.name}'?"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
 }

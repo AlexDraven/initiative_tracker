@@ -47,6 +47,8 @@ class App extends StatelessWidget {
           CampaignListScreen.routeName: (context) => const CampaignListScreen(),
           CharacterScreen.routeName: (context) => const CharacterScreen(),
           CampaignScreen.routeName: (context) => const CampaignScreen(),
+          CampaignAdminScreen.routeName: (context) =>
+              const CampaignAdminScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
           SettingsScreen.routeName: (context) => const SettingsScreen(),
           CheckAuthScreen.routeName: (context) => const CheckAuthScreen(),

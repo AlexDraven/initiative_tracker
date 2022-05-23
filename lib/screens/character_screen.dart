@@ -89,26 +89,26 @@ class _CharacterScreenBody extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FloatingActionButton(
-          onPressed: charactersService.isSaving
-              ? null
-              : () async {
-                  if (!characterForm.isValidForm()) return;
-                  final String? imageUrl =
-                      await charactersService.uploadImage();
-                  if (imageUrl != null) {
-                    characterForm.character.picture = imageUrl;
-                  }
-                  await charactersService
-                      .saveOrCreateCharacter(characterForm.character);
-                  Navigator.of(context).pop();
-                },
-          child: charactersService.isSaving
-              ? const CircularProgressIndicator(
-                  color: Colors.white,
-                )
-              : const Icon(Icons.save_outlined)),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      // floatingActionButton: FloatingActionButton(
+      //     onPressed: charactersService.isSaving
+      //         ? null
+      //         : () async {
+      //             if (!characterForm.isValidForm()) return;
+      //             final String? imageUrl =
+      //                 await charactersService.uploadImage();
+      //             if (imageUrl != null) {
+      //               characterForm.character.picture = imageUrl;
+      //             }
+      //             await charactersService
+      //                 .saveOrCreateCharacter(characterForm.character);
+      //             Navigator.of(context).pop();
+      //           },
+      //     child: charactersService.isSaving
+      //         ? const CircularProgressIndicator(
+      //             color: Colors.white,
+      //           )
+      //         : const Icon(Icons.save_outlined)),
     );
   }
 }
