@@ -190,7 +190,7 @@ class _CampaignForm extends StatelessWidget {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.multiline,
-                  minLines: 5,
+                  minLines: 10,
                   maxLines: null,
                   initialValue: campaign.notes,
                   onChanged: (value) => campaign.notes = value,

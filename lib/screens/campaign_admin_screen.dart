@@ -34,52 +34,23 @@ class _CampaignScreenBody extends StatelessWidget {
     final campaignForm = Provider.of<CampaignFormProvider>(context);
 
     return Scaffold(
-      body: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      appBar: AppBar(
+        title: Text(campaignsService.selectedCampaign.name ?? '-'),
+      ),
+      body: Center(
         child: Column(
-          children: [
-            Stack(
-              children: [
-                CampaignImage(
-                  campaign: campaignsService.selectedCampaign,
-                ),
-                Positioned(
-                    top: 40,
-                    left: 20,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios,
-                          size: 40, color: Colors.white),
-                      onPressed: () async {
-                        Navigator.of(context).pop();
-                      },
-                    )),
-                // Positioned(
-                //     top: 40,
-                //     right: 20,
-                //     child: IconButton(
-                //       icon: const Icon(Icons.camera_alt_outlined,
-                //           size: 40, color: Colors.white),
-                //       onPressed: () async {
-                //         final ImagePicker picker = ImagePicker();
-                //         final XFile? pickedFile =
-                //             await picker.pickImage(source: ImageSource.gallery);
-                //         if (pickedFile == null) {
-                //           // ignore: avoid_print
-                //           print('no selecciono nada');
-                //           return;
-                //         }
-                //         campaignsService
-                //             .updateSelectedCampaignImage(pickedFile.path);
-                //       },
-                //     ))
-              ],
-            ),
-            //  _CampaignForm(campaignsService: campaignsService),
-            const SizedBox(
-              height: 100,
-            )
-          ],
-        ),
+            children: List<Widget>.generate(
+                campaignsService.selectedCampaign.characters!.length,
+                (int index) {
+          return MaterialButton(
+            onPressed: () {},
+            color: Colors.blue,
+            child: Text(
+                campaignsService.selectedCampaign.characters![index].name ??
+                    '-',
+                style: const TextStyle(color: Colors.white)),
+          );
+        })),
       ),
     );
   }

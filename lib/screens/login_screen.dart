@@ -29,13 +29,18 @@ class LoginScreen extends StatelessWidget {
           ])),
           const SizedBox(height: 100),
           MaterialButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            disabledColor: Colors.grey,
+            elevation: 0,
+            color: Colors.deepPurple,
             onPressed: () => Navigator.pushReplacementNamed(
                 context, RegisterScreen.routeName),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
               child: const Text(
                 "Crear una nueva cuenta",
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             ),
           ),

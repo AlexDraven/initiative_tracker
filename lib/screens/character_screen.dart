@@ -214,7 +214,7 @@ class _CharacterForm extends StatelessWidget {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.multiline,
-                  minLines: 1,
+                  minLines: 5,
                   maxLines: null,
                   initialValue: character.description,
                   onChanged: (value) => character.description = value,
@@ -233,7 +233,7 @@ class _CharacterForm extends StatelessWidget {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.multiline,
-                  minLines: 5,
+                  minLines: 10,
                   maxLines: null,
                   initialValue: character.notes,
                   onChanged: (value) => character.notes = value,

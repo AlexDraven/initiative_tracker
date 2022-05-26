@@ -1,3 +1,5 @@
+import 'character.dart';
+
 class Campaign {
   int? id;
   String? name;
@@ -6,6 +8,7 @@ class Campaign {
   String? description;
   String? notes;
   bool? isActive;
+  List<Character>? characters;
   String? createdAt;
   String? updatedAt;
   String? deletedAt;
@@ -18,6 +21,7 @@ class Campaign {
       this.description,
       this.notes,
       this.isActive,
+      this.characters,
       this.createdAt,
       this.updatedAt,
       this.deletedAt});
@@ -30,6 +34,11 @@ class Campaign {
     description = json['description'];
     notes = json['notes'];
     isActive = json['isActive'];
+    characters = json['characters'] != null
+        ? (json['characters'] as List).map((dynamic item) {
+            return Character.fromJson(item);
+          }).toList()
+        : null;
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     deletedAt = json['deletedAt'];
@@ -44,6 +53,7 @@ class Campaign {
     data['description'] = description;
     data['notes'] = notes;
     data['isActive'] = isActive;
+    data['characters'] = characters;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['deletedAt'] = deletedAt;
@@ -57,6 +67,7 @@ class Campaign {
         description: description,
         notes: notes,
         isActive: isActive,
+        characters: characters,
         createdAt: createdAt,
         updatedAt: updatedAt,
       );
