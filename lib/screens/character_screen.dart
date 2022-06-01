@@ -51,6 +51,7 @@ class _CharacterScreenBody extends StatelessWidget {
                           size: 40, color: Colors.white),
                       onPressed: () async {
                         if (!characterForm.isValidForm()) return;
+
                         final String? imageUrl =
                             await charactersService.uploadImage();
                         if (imageUrl != null) {
@@ -142,9 +143,9 @@ class _CharacterForm extends StatelessWidget {
                   initialValue: character.name,
                   onChanged: (value) => character.name = value,
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null) {
                       return 'Ingrese un nombre';
-                    } else if (value.length > 25) {
+                    } else if (value.length > 35) {
                       return 'El nombre es muy largo';
                     } else {
                       return null;
@@ -311,8 +312,7 @@ class _CharacterForm extends StatelessWidget {
         padding: const EdgeInsets.all(10),
       ),
       onPressed: () async {
-        await charactersService.deleteCharacter(character);
-
+        charactersService.deleteCharacter(character);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const CharacterListScreen()),

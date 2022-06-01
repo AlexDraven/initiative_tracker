@@ -141,7 +141,7 @@ class _CampaignForm extends StatelessWidget {
                   initialValue: campaign.name,
                   onChanged: (value) => campaign.name = value,
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null) {
                       return 'Ingrese un nombre';
                     } else if (value.length > 50) {
                       return 'El nombre es muy largo';

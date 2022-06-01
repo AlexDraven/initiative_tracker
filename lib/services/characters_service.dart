@@ -83,6 +83,39 @@ class CharactersService extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool isSelectedCharacterEdited() {
+    if (selectedCharacter.id == null) {
+      // find selected character in characters list
+      // compare it with selectedCharacter
+      return false;
+    } else {
+      // id: id,
+      // name: name,
+      // rolClass: rolClass,
+      // race: race,
+      // level: level,
+      // picture: picture,
+      // description: description,
+      // notes: notes,
+      // isActive: isActive,
+      // createdAt: createdAt,
+      // updatedAt: updatedAt,
+      final Character characterUnedited = characters.firstWhere(
+          (character) => character.id == selectedCharacter.id,
+          orElse: () => Character());
+
+      return selectedCharacter.id != characterUnedited.id ||
+          selectedCharacter.name != characterUnedited.name ||
+          selectedCharacter.rolClass != characterUnedited.rolClass ||
+          selectedCharacter.race != characterUnedited.race ||
+          selectedCharacter.level != characterUnedited.level ||
+          selectedCharacter.picture != characterUnedited.picture ||
+          selectedCharacter.description != characterUnedited.description ||
+          selectedCharacter.notes != characterUnedited.notes ||
+          selectedCharacter.isActive != characterUnedited.isActive;
+    }
+  }
+
   Future _updateCharacter(Character character) async {
     final url = Uri.https(_baseUrl, '/characters/${character.id}');
     final response = await http.patch(url,
