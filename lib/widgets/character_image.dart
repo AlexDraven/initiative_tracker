@@ -46,7 +46,7 @@ class CharacterImage extends StatelessWidget {
   Widget getImage(String? picture) {
     if (picture == null) {
       return const Image(
-        image: AssetImage('assets/images/ditto.png'),
+        image: AssetImage('assets/images/default-character.png'),
         fit: BoxFit.cover,
       );
     }

@@ -171,7 +171,7 @@ class _BackgroundImage extends StatelessWidget {
             height: 400,
             child: campaign.picture == null
                 ? const Image(
-                    image: AssetImage('assets/images/ditto.png'),
+                    image: AssetImage('assets/images/default-campaign.png'),
                     fit: BoxFit.cover)
                 : FadeInImage(
                     placeholder: const AssetImage('assets/images/dados-35.gif'),

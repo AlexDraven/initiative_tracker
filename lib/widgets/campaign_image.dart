@@ -46,7 +46,7 @@ class CampaignImage extends StatelessWidget {
   Widget getImage(String? picture) {
     if (picture == null) {
       return const Image(
-        image: AssetImage('assets/images/ditto.png'),
+        image: AssetImage('assets/images/default-campaign.png'),
         fit: BoxFit.cover,
       );
     }
