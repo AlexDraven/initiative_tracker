@@ -8,6 +8,8 @@ import 'package:initiative_tracker/services/services.dart';
 import 'package:initiative_tracker/widgets/campaign_image.dart';
 import 'package:provider/provider.dart';
 
+import '../models/character.dart';
+
 class CampaignAdminScreen extends StatelessWidget {
   const CampaignAdminScreen({Key? key}) : super(key: key);
   static const String routeName = '/campaign/admin';
@@ -39,8 +41,8 @@ class _CampaignScreenBody extends StatelessWidget {
       ),
       body: Center(
         child: Column(children: [
+          const SizedBox(height: 5),
           _CampaignAdminForm(campaignsService: campaignsService),
-          _CharactersList(campaignsService: campaignsService)
         ]),
       ),
     );
@@ -60,21 +62,52 @@ class _CharactersList extends StatelessWidget {
     return Column(
         children: <Widget>[
               const SizedBox(
-                height: 100,
+                height: 5,
               )
             ] +
-            List<Widget>.generate(
-                campaignsService.selectedCampaign.characters!.length,
-                (int index) {
-              return MaterialButton(
-                onPressed: () {},
-                color: Colors.blue,
-                child: Text(
-                    campaignsService.selectedCampaign.characters![index].name ??
-                        '-',
-                    style: const TextStyle(color: Colors.white)),
-              );
-            }));
+            [_CharacterList(context)]);
+  }
+
+  Widget _CharacterList(BuildContext context) {
+    if (campaignsService.selectedCampaign.characters == null ||
+        campaignsService.selectedCampaign.characters!.isEmpty) {
+      return const Text('No hay jugadores! D:!',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Color.fromARGB(255, 88, 88, 88),
+              fontWeight: FontWeight.bold));
+    } else {
+      return Column(
+        children: <Widget>[
+          const SizedBox(
+            height: 5,
+          ),
+          const Text('Jugadores',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Color.fromARGB(255, 88, 88, 88),
+                  fontWeight: FontWeight.bold)),
+          ...List<Widget>.generate(
+              campaignsService.selectedCampaign.characters!.length,
+              (int index) {
+            return _CharacterListItem(
+              campaignsService.selectedCampaign.characters![index],
+            );
+          }),
+        ],
+      );
+    }
+  }
+
+  Widget _CharacterListItem(
+    Character character,
+  ) {
+    return MaterialButton(
+      onPressed: () {},
+      color: Colors.blue,
+      child: Text(character.name ?? '-',
+          style: const TextStyle(color: Colors.white)),
+    );
   }
 }
 
@@ -90,9 +123,9 @@ class _CampaignAdminForm extends StatelessWidget {
     final campaignForm = Provider.of<CampaignFormProvider>(context);
     final campaign = campaignForm.campaign;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 0),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 5),
         width: double.infinity,
         decoration: _buildBoxDecoration(),
         child: Form(
@@ -103,87 +136,10 @@ class _CampaignAdminForm extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                TextFormField(
-                  initialValue: campaign.name,
-                  onChanged: (value) => campaign.name = value,
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Ingrese un nombre';
-                    } else if (value.length > 50) {
-                      return 'El nombre es muy largo';
-                    } else {
-                      return null;
-                    }
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'Nombre de la campaña',
-                    labelText: 'Nombre',
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.multiline,
-                  minLines: 1,
-                  maxLines: null,
-                  initialValue: campaign.description,
-                  onChanged: (value) => campaign.description = value,
-                  decoration: const InputDecoration(
-                    hintText: 'Descripción de la campaña',
-                    labelText: 'Descripción',
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    minimumSize: const Size(400, 40),
-                    backgroundColor: Colors.green,
-                  ),
-                  onPressed: () {
-                    // TODO: Open initiative screen
-                    print('OPEN INITIATIVE SCREEN');
-                  },
-                  child: const Text(
-                    "Roll Initiative!",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.multiline,
-                  minLines: 10,
-                  maxLines: null,
-                  initialValue: campaign.notes,
-                  onChanged: (value) => campaign.notes = value,
-                  decoration: const InputDecoration(
-                    hintText: 'Notas de la campaña',
-                    labelText: 'Notas',
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    minimumSize: const Size(400, 40),
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.all(10),
-                  ),
-                  onPressed: () {
-                    // TODO: Open admin  screen
-                    print('OPEN ADMIN SCREEN');
-                    Navigator.pushNamed(context, CampaignAdminScreen.routeName);
-                  },
-                  child: const Text(
-                    "Administrar",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+                // code
+                Text('CODIGO', style: const TextStyle(fontSize: 20)),
+
+                _CharactersList(campaignsService: campaignsService),
                 const SizedBox(
                   height: 20,
                 ),
@@ -196,7 +152,10 @@ class _CampaignAdminForm extends StatelessWidget {
   BoxDecoration _buildBoxDecoration() => BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.only(
-            bottomRight: Radius.circular(25), bottomLeft: Radius.circular(25)),
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25),
+            bottomRight: Radius.circular(25),
+            bottomLeft: Radius.circular(25)),
         boxShadow: [
           BoxShadow(
               color: Colors.black.withOpacity(0.1),
