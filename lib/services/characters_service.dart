@@ -45,7 +45,7 @@ class CharactersService extends ChangeNotifier {
       }).toList();
       this.characters.clear();
       characters.sort(
-          (a, b) => a.createdAt.toString().compareTo(b.createdAt.toString()));
+          (a, b) => b.createdAt.toString().compareTo(a.createdAt.toString()));
       this.characters.addAll(characters);
       isLoading = false;
       notifyListeners();

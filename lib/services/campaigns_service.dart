@@ -43,7 +43,7 @@ class CampaignsService extends ChangeNotifier {
       }).toList();
       this.campaigns.clear();
       campaigns.sort(
-          (a, b) => a.createdAt.toString().compareTo(b.createdAt.toString()));
+          (a, b) => b.createdAt.toString().compareTo(a.createdAt.toString()));
       this.campaigns.addAll(campaigns);
       isLoading = false;
       notifyListeners();
