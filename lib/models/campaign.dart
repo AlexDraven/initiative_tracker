@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'character.dart';
 
 class Campaign {
@@ -53,7 +55,7 @@ class Campaign {
     data['description'] = description;
     data['notes'] = notes;
     data['isActive'] = isActive;
-    data['characters'] = characters;
+    // data['characters'] = jsonEncode(characters);
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['deletedAt'] = deletedAt;
