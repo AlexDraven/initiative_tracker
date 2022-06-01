@@ -44,6 +44,8 @@ class CharactersService extends ChangeNotifier {
         return Character.fromJson(item);
       }).toList();
       this.characters.clear();
+      characters.sort(
+          (a, b) => a.createdAt.toString().compareTo(b.createdAt.toString()));
       this.characters.addAll(characters);
       isLoading = false;
       notifyListeners();
@@ -85,21 +87,8 @@ class CharactersService extends ChangeNotifier {
 
   bool isSelectedCharacterEdited() {
     if (selectedCharacter.id == null) {
-      // find selected character in characters list
-      // compare it with selectedCharacter
       return false;
     } else {
-      // id: id,
-      // name: name,
-      // rolClass: rolClass,
-      // race: race,
-      // level: level,
-      // picture: picture,
-      // description: description,
-      // notes: notes,
-      // isActive: isActive,
-      // createdAt: createdAt,
-      // updatedAt: updatedAt,
       final Character characterUnedited = characters.firstWhere(
           (character) => character.id == selectedCharacter.id,
           orElse: () => Character());
@@ -125,11 +114,6 @@ class CharactersService extends ChangeNotifier {
         },
         body: json.encode(character));
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      // final data = json.decode(response.body);
-      // final Character updatedCharacter = Character.fromJson(data);
-      // final index =
-      //     characters.indexWhere((Character c) => c.id == updatedCharacter.id);
-      // characters[index] = updatedCharacter;
       loadCharacters();
       notifyListeners();
     } else {
