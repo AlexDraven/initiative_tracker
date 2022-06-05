@@ -18,15 +18,24 @@ class LoginScreen extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.2,
           ),
-          CardContainer(
+          Container(
               child: Column(children: [
-            const SizedBox(height: 10),
-            Text('Login', style: Theme.of(context).textTheme.headline4),
+            const SizedBox(height: 50),
+            //   Text('Login', style: Theme.of(context).textTheme.headline4),
             const SizedBox(height: 30),
             ChangeNotifierProvider(
                 create: (_) => LoginFormProvider(), child: const _LoginForm()),
             //const _LoginForm()
           ])),
+          // CardContainer(
+          //     child: Column(children: [
+          //   const SizedBox(height: 10),
+          //   Text('Login', style: Theme.of(context).textTheme.headline4),
+          //   const SizedBox(height: 30),
+          //   ChangeNotifierProvider(
+          //       create: (_) => LoginFormProvider(), child: const _LoginForm()),
+          //   //const _LoginForm()
+          // ])),
           const SizedBox(height: 100),
           MaterialButton(
             shape:

@@ -24,13 +24,22 @@ class _HeaderIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+        child: Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
       child: Container(
-        width: double.infinity,
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
-        child: const Icon(Icons.access_alarms_outlined,
-            size: 100, color: Colors.white70),
+        width: MediaQuery.of(context).size.width * 0.3,
+        height: MediaQuery.of(context).size.height * 0.2,
+        child: const Image(
+          image: AssetImage('assets/images/icon/icon-logo-dragon-v2.png'),
+          fit: BoxFit.contain,
+        ),
       ),
-    );
+    )
+        //   const Icon(Icons.access_alarms_outlined,
+        //       size: 100, color: Colors.white70),
+        // ),
+        );
   }
 }
 
@@ -40,14 +49,14 @@ class _TopBox extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
         width: double.infinity,
-        height: size.height * 0.5,
+        height: size.height * 1,
         decoration: _topBoxBackground(),
         child: Stack(children: [
-          Positioned(top: 90, left: 30, child: _Bubble()),
-          Positioned(top: -40, left: -30, child: _Bubble()),
-          Positioned(top: -50, right: -20, child: _Bubble()),
-          Positioned(bottom: -50, left: 10, child: _Bubble()),
-          Positioned(bottom: 120, right: 20, child: _Bubble()),
+          // Positioned(top: 90, left: 30, child: _Bubble()),
+          // Positioned(top: -40, left: -30, child: _Bubble()),
+          // Positioned(top: -50, right: -20, child: _Bubble()),
+          // Positioned(bottom: -50, left: 10, child: _Bubble()),
+          // Positioned(bottom: 120, right: 20, child: _Bubble()),
         ]));
   }
 
@@ -55,10 +64,7 @@ class _TopBox extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Color.fromARGB(255, 207, 10, 10),
-            Color.fromARGB(255, 48, 22, 163)
-          ],
+          colors: [Color.fromARGB(255, 0, 0, 0), Color.fromARGB(255, 16, 0, 0)],
         ),
       );
 }

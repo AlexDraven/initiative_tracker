@@ -85,6 +85,7 @@ class _CharactersList extends StatelessWidget {
           const Text('Jugadores',
               textAlign: TextAlign.center,
               style: TextStyle(
+                  fontSize: 16,
                   color: Color.fromARGB(255, 88, 88, 88),
                   fontWeight: FontWeight.bold)),
           ...List<Widget>.generate(
@@ -102,11 +103,25 @@ class _CharactersList extends StatelessWidget {
   Widget _CharacterListItem(
     Character character,
   ) {
-    return MaterialButton(
-      onPressed: () {},
-      color: Colors.blue,
-      child: Text(character.name ?? '-',
-          style: const TextStyle(color: Colors.white)),
+    return Wrap(
+      children: [
+        MaterialButton(
+          onPressed: () {},
+          color: Colors.cyan,
+          minWidth: 290,
+          child: Text(character.name ?? '-',
+              style: const TextStyle(color: Colors.white)),
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        MaterialButton(
+          onPressed: () {},
+          color: Colors.red,
+          minWidth: 10,
+          child: const Text('x', style: TextStyle(color: Colors.white)),
+        )
+      ],
     );
   }
 }
@@ -137,7 +152,11 @@ class _CampaignAdminForm extends StatelessWidget {
                   height: 5,
                 ),
                 // code
-                Text('CODIGO', style: const TextStyle(fontSize: 20)),
+                const Text('Codigo de referencia',
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                Text(campaignsService.selectedCampaign.code ?? '- Sin Codigo -',
+                    style: const TextStyle(fontSize: 20)),
 
                 _CharactersList(campaignsService: campaignsService),
                 const SizedBox(
