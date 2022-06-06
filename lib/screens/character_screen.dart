@@ -115,10 +115,12 @@ class _CharacterScreenBody extends StatelessWidget {
 }
 
 class _CharacterForm extends StatelessWidget {
-  const _CharacterForm({
+  _CharacterForm({
     Key? key,
     required this.charactersService,
   }) : super(key: key);
+
+  TextEditingController _textFieldController = TextEditingController();
 
   final CharactersService charactersService;
   @override
@@ -137,7 +139,12 @@ class _CharacterForm extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(
-                  height: 5,
+                  height: 0,
+                ),
+                _buildUniteToCampaignButton(
+                    context, charactersService, character),
+                const SizedBox(
+                  height: 0,
                 ),
                 TextFormField(
                   initialValue: character.name,
@@ -330,6 +337,112 @@ class _CharacterForm extends StatelessWidget {
       title: const Text("Eliminar personaje"),
       content: Text(
           "¿Está seguro que desea eliminar el personaje '${character.name}'?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  // If not in campaign show 'unite to campaign' button, else show 'unite to campaign' button
+  Widget _buildUniteToCampaignButton(BuildContext context,
+      CharactersService charactersService, Character character) {
+    final originalCharacter = charactersService.characters
+        .firstWhere((Character c) => c.id == character.id);
+    if (originalCharacter.campaign == null) {
+      return TextButton(
+        style: TextButton.styleFrom(
+          minimumSize: const Size(400, 40),
+          backgroundColor: Colors.green,
+          padding: const EdgeInsets.all(0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
+        ),
+        onPressed: () {
+          return addToCampaignDialog(context, character);
+          //  print('Unite to campaign');
+        },
+        child: const Text(
+          "Unirse a una campaña",
+          style: TextStyle(color: Colors.white),
+        ),
+      );
+    } else {
+      return TextButton(
+        style: TextButton.styleFrom(
+          minimumSize: const Size(400, 40),
+          backgroundColor: Color.fromARGB(255, 0, 121, 4),
+          padding: const EdgeInsets.all(0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
+        ),
+        onPressed: () {
+          // TODO: eliminar de campaña, esto saca dialogo de confirmacion y te saca de la campaña
+          print('touch name of campaign');
+          //   return removeFromCampaignDialog(context, character);
+        },
+        child: Text(
+          'Campaña: ${originalCharacter.campaign?.name ?? '-'}',
+          style: const TextStyle(color: Colors.white),
+        ),
+      );
+    }
+  }
+
+  // add to campaign
+  addToCampaignDialog(BuildContext context, Character character) {
+    String codeDialog = '';
+    String valueText = '';
+    Widget cancelButton = TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.grey,
+        padding: const EdgeInsets.all(10),
+      ),
+      onPressed: () => Navigator.of(context).pop(),
+      child: const Text(
+        "Cancelar",
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+    Widget continueButton = TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.red,
+        padding: const EdgeInsets.all(10),
+      ),
+      onPressed: () async {
+        // charactersService.addToCampaign(character); // ???
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const CharacterListScreen()),
+        );
+        // ignore: use_build_context_synchronously
+        // Navigator.of(context).pop();
+        // TODO : reload list
+      },
+      child: const Text(
+        "Confirmar",
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text("Agregar personaje"),
+      content: TextField(
+        onChanged: (value) {
+          valueText = value;
+        },
+        controller: _textFieldController,
+        decoration: InputDecoration(hintText: "Text Field in Dialog"),
+      ),
+      //  Text(
+      //     "¿Está seguro que desea agregar el personaje '${character.name}'?"),
       actions: [
         cancelButton,
         continueButton,

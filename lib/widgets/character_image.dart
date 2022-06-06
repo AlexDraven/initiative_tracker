@@ -15,7 +15,7 @@ class CharacterImage extends StatelessWidget {
       child: Container(
         decoration: _buildBoxDecopation(),
         width: double.infinity,
-        height: 450,
+        height: 350,
         child: Opacity(
           opacity: 0.9,
           child: Hero(
