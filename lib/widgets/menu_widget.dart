@@ -14,36 +14,36 @@ class MenuWidget extends StatelessWidget {
     final authService = Provider.of<AuthService>(context, listen: false);
     final modeService = Provider.of<ModeService>(context, listen: false);
     return Drawer(
+      backgroundColor: Color.fromARGB(255, 12, 12, 12),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
             decoration: const BoxDecoration(
+                color: Color.fromRGBO(0, 0, 0, 0.90),
                 image: DecorationImage(
-                    image: AssetImage('assets/images/dnd_wallpaper-1.jpg'),
-                    fit: BoxFit.cover)),
+                    image: AssetImage(
+                        'assets/images/icon/icon-logo-dragon-v2.png'),
+                    fit: BoxFit.contain)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text(
-                  authService.username,
+                  ' ${authService.username} ',
                   style: const TextStyle(
                       color: Color.fromARGB(255, 185, 0, 0),
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      backgroundColor: Color.fromARGB(125, 0, 0, 0)),
+                      backgroundColor: Color.fromARGB(255, 0, 0, 0)),
                 ),
               ],
             ),
           ),
           Text('Modo: ${modeService.getModeLabel()}',
-              style: const TextStyle(
-                  fontSize: 14,
-                  color: Color.fromARGB(255, 185, 0, 0),
-                  fontWeight: FontWeight.bold)),
+              style: getTextStyle(context)),
           ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
+              leading: Icon(Icons.home, color: getModeColor(context)),
+              title: Text('Home', style: getTextStyle(context)),
               onTap: () {
                 if (modeService.currentMode == modeService.modeMaster) {
                   Navigator.pushReplacementNamed(
@@ -54,17 +54,17 @@ class MenuWidget extends StatelessWidget {
                 }
               }),
           ListTile(
-            leading: const Icon(Icons.account_circle),
-            title: const Text('Perfil'),
+            leading: Icon(Icons.account_circle, color: getModeColor(context)),
+            title: Text('Perfil', style: getTextStyle(context)),
             onTap: () => Navigator.pushReplacementNamed(
                 context, ProfileScreen.routeName),
           ),
           ListTile(
-              leading: const Icon(Icons.admin_panel_settings),
-              title: Text((modeService.currentMode == modeService.modePlayer
-                      ? 'Player'
-                      : 'Master') +
-                  ' Mode'),
+              leading: Icon(Icons.admin_panel_settings,
+                  color: getModeColor(context)),
+              title: Text(
+                  'Cambiar a ${modeService.currentMode != modeService.modePlayer ? 'Player' : 'Master'}',
+                  style: getTextStyle(context)),
               onTap: () {
                 if (modeService.currentMode == modeService.modePlayer) {
                   modeService.changeMode(modeService.modeMaster);
@@ -77,14 +77,14 @@ class MenuWidget extends StatelessWidget {
                 }
               }),
           ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Configuracion'),
+            leading: Icon(Icons.settings, color: getModeColor(context)),
+            title: Text('Configuracion', style: getTextStyle(context)),
             onTap: () => Navigator.pushReplacementNamed(
                 context, SettingsScreen.routeName),
           ),
           ListTile(
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text('Salir'),
+              leading: Icon(Icons.exit_to_app, color: getModeColor(context)),
+              title: Text('Salir', style: getTextStyle(context)),
               onTap: () async {
                 await authService.logout();
                 Navigator.pushReplacementNamed(context, LoginScreen.routeName);
@@ -92,5 +92,22 @@ class MenuWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  getTextStyle(BuildContext context) {
+    final modeService = Provider.of<ModeService>(context, listen: false);
+    return TextStyle(
+        fontSize: 16,
+        color: modeService.currentMode != modeService.modePlayer
+            ? Color.fromARGB(255, 185, 0, 0)
+            : Color.fromARGB(255, 185, 41, 41),
+        fontWeight: FontWeight.bold);
+  }
+
+  getModeColor(BuildContext context) {
+    final modeService = Provider.of<ModeService>(context, listen: false);
+    return modeService.currentMode != modeService.modePlayer
+        ? Color.fromARGB(255, 185, 0, 0)
+        : Color.fromARGB(255, 185, 41, 41);
   }
 }
