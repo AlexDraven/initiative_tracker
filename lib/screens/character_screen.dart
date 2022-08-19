@@ -57,8 +57,10 @@ class _CharacterScreenBody extends StatelessWidget {
                         if (imageUrl != null) {
                           characterForm.character.picture = imageUrl;
                         }
-                        await charactersService
-                            .saveOrCreateCharacter(characterForm.character);
+                        if (charactersService.isSelectedCharacterEdited()) {
+                          await charactersService
+                              .saveOrCreateCharacter(characterForm.character);
+                        }
                         Navigator.of(context).pop();
                       },
                     )),
@@ -353,47 +355,54 @@ class _CharacterForm extends StatelessWidget {
   // If not in campaign show 'unite to campaign' button, else show 'unite to campaign' button
   Widget _buildUniteToCampaignButton(BuildContext context,
       CharactersService charactersService, Character character) {
-    final originalCharacter = charactersService.characters
-        .firstWhere((Character c) => c.id == character.id);
-    if (originalCharacter.campaign == null) {
-      return TextButton(
-        style: TextButton.styleFrom(
-          minimumSize: const Size(400, 40),
-          backgroundColor: Colors.green,
-          padding: const EdgeInsets.all(0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
+    if (character.id != null &&
+        charactersService.characters
+                .indexWhere((element) => element.id == character.id) !=
+            -1) {
+      final originalCharacter = charactersService.characters
+          .firstWhere((Character c) => c.id == character.id);
+      if (originalCharacter.campaign == null) {
+        return TextButton(
+          style: TextButton.styleFrom(
+            minimumSize: const Size(400, 40),
+            backgroundColor: Colors.green,
+            padding: const EdgeInsets.all(0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
           ),
-        ),
-        onPressed: () {
-          return addToCampaignDialog(context, character);
-          //  print('Unite to campaign');
-        },
-        child: const Text(
-          "Unirse a una campaña",
-          style: TextStyle(color: Colors.white),
-        ),
-      );
+          onPressed: () {
+            return addToCampaignDialog(context, character);
+            //  print('Unite to campaign');
+          },
+          child: const Text(
+            "Unirse a una campaña",
+            style: TextStyle(color: Colors.white),
+          ),
+        );
+      } else {
+        return TextButton(
+          style: TextButton.styleFrom(
+            minimumSize: const Size(400, 40),
+            backgroundColor: Color.fromARGB(255, 0, 121, 4),
+            padding: const EdgeInsets.all(0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+          ),
+          onPressed: () {
+            // TODO: eliminar de campaña, esto saca dialogo de confirmacion y te saca de la campaña
+            print('touch name of campaign');
+            //   return removeFromCampaignDialog(context, character);
+          },
+          child: Text(
+            'Campaña: ${originalCharacter.campaign?.name ?? '-'}',
+            style: const TextStyle(color: Colors.white),
+          ),
+        );
+      }
     } else {
-      return TextButton(
-        style: TextButton.styleFrom(
-          minimumSize: const Size(400, 40),
-          backgroundColor: Color.fromARGB(255, 0, 121, 4),
-          padding: const EdgeInsets.all(0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
-          ),
-        ),
-        onPressed: () {
-          // TODO: eliminar de campaña, esto saca dialogo de confirmacion y te saca de la campaña
-          print('touch name of campaign');
-          //   return removeFromCampaignDialog(context, character);
-        },
-        child: Text(
-          'Campaña: ${originalCharacter.campaign?.name ?? '-'}',
-          style: const TextStyle(color: Colors.white),
-        ),
-      );
+      return Container();
     }
   }
 
